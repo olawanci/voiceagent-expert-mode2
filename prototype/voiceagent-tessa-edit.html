@@ -53,35 +53,68 @@
   .app { display: flex; min-height: 100vh; }
 
   .sidebar {
-    width: 64px;
+    width: 220px;
     background: var(--white);
     border-right: 1px solid var(--gray-100);
     flex-shrink: 0;
-    padding: 20px 12px;
+    padding: 16px 12px 12px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    align-items: center;
+    gap: 2px;
   }
-  .sidebar .logo {
-    width: 32px; height: 32px;
+  .sidebar .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px 16px;
+  }
+  .sidebar .logo-mark {
+    width: 28px; height: 28px;
     background: var(--brand-500);
-    border-radius: 8px;
+    border-radius: 7px;
     color: white;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700;
     font-size: 13px;
-    margin-bottom: 12px;
   }
-  .sidebar a {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    color: var(--gray-500);
-    display: flex; align-items: center; justify-content: center;
+  .sidebar .logo-word {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--gray-900);
+  }
+  .sidebar .nav-section {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    padding: 12px 10px 6px;
+  }
+  .sidebar a.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: var(--gray-700);
     text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.05px;
   }
-  .sidebar a:hover { background: var(--gray-50); color: var(--gray-800); }
-  .sidebar a.active { background: var(--brand-25); color: var(--brand-500); }
+  .sidebar a.nav-item svg { flex-shrink: 0; color: var(--gray-500); }
+  .sidebar a.nav-item:hover { background: var(--gray-50); color: var(--gray-900); }
+  .sidebar a.nav-item:hover svg { color: var(--gray-700); }
+  .sidebar a.nav-item.active {
+    background: var(--brand-25);
+    color: var(--brand-500);
+  }
+  .sidebar a.nav-item.active svg { color: var(--brand-500); }
+  .sidebar a.nav-item .chev { margin-left: auto; opacity: 0.7; }
+  .sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 8px; border-top: 1px solid var(--gray-100); }
 
   .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
@@ -89,11 +122,15 @@
     height: 56px;
     background: var(--white);
     border-bottom: 1px solid var(--gray-100);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 20px;
+    gap: 16px;
   }
+  .topbar .topbar-left { display: flex; align-items: center; }
+  .topbar .topbar-center { display: flex; justify-content: center; }
+  .topbar .topbar-right { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
   .breadcrumb {
     display: flex;
     align-items: center;
@@ -105,12 +142,36 @@
   .breadcrumb .crumb-sep { color: var(--gray-300); }
   .breadcrumb .crumb-current { color: var(--gray-900); }
   .credit-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     background: var(--brand-25);
     color: var(--brand-500);
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--brand-100);
+  }
+  .credit-pill:hover { background: #e7ebff; }
+  .topbar-balance {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-900);
+    padding: 0 4px;
+  }
+  .topbar-avatar {
+    width: 32px; height: 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffd29e 0%, #ff9d6c 100%);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
   }
 
   .content {
@@ -433,8 +494,165 @@
     border-radius: 10px;
     gap: 12px;
   }
-  .skill-title { font-weight: 500; font-size: 14px; }
+  .skill-title { font-weight: 500; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
   .skill-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+  .skill-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--success-100);
+    color: var(--success-600);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Language / Voice dual-chip input */
+  .chip-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    background: var(--white);
+    min-height: 40px;
+  }
+  .lang-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px 4px 6px;
+    border-radius: 999px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-800);
+  }
+  .lang-chip .flag {
+    width: 16px; height: 16px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--gray-200);
+    font-size: 10px;
+    overflow: hidden;
+  }
+  .lang-chip .x {
+    width: 14px; height: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gray-400);
+    cursor: pointer;
+  }
+  .lang-chip .x:hover { color: var(--gray-700); }
+
+  /* Section banner (Knowledge sources) */
+  .section-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--brand-25);
+    border: 1px solid var(--brand-100);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .section-banner-text {
+    font-size: 13px;
+    color: var(--gray-800);
+    font-weight: 500;
+  }
+
+  /* Knowledge source list */
+  .kb-list { display: flex; flex-direction: column; gap: 8px; }
+  .kb-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+  }
+  .kb-icon {
+    width: 32px; height: 38px;
+    border-radius: 4px;
+    background: #ffe2e0;
+    color: #c81e1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+  .kb-meta { flex: 1; min-width: 0; }
+  .kb-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0 0 2px;
+  }
+  .kb-info {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .kb-info .dot-sep { width: 3px; height: 3px; border-radius: 999px; background: var(--gray-300); display: inline-block; }
+  .kb-info .completed { color: var(--success-600); }
+
+  /* Scenarios */
+  .scenario-list { display: flex; flex-direction: column; gap: 8px; }
+  .scenario-card {
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .scenario-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .scenario-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--brand-500);
+    background: var(--brand-25);
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .scenario-icons { display: inline-flex; gap: 6px; color: var(--gray-400); }
+  .scenario-icons button {
+    border: none;
+    background: transparent;
+    color: inherit;
+    width: 24px; height: 24px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .scenario-icons button:hover { background: var(--gray-50); color: var(--gray-700); }
+  .scenario-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 6px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .scenario-row .label {
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
 
   /* Editable JSON card */
   .editor-card {
@@ -1366,27 +1584,76 @@
 <div class="app">
 
   <aside class="sidebar">
-    <div class="logo">CT</div>
-    <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></a>
-    <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg></a>
-    <a href="#" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></a>
+    <div class="logo-row">
+      <div class="logo-mark">CT</div>
+      <span class="logo-word">CLOUDTALK</span>
+    </div>
+
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Dashboard
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+      Call Monitor
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics
+    </a>
+
+    <div class="nav-section">Company</div>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Users
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="3"/><path d="M21 21v-2a3 3 0 0 0-2-2.83"/><circle cx="17" cy="8" r="2.5"/></svg>
+      Groups
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Contacts
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+      Numbers
+    </a>
+
+    <div class="nav-section">Integrations</div>
+    <a href="#" class="nav-item active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      VoiceAgents
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+    <a href="#" class="nav-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Dialer
+    </a>
+
+    <div class="sidebar-bottom">
+      <a href="#" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
+      </a>
+      <a href="#" class="nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Account
+      </a>
+    </div>
   </aside>
 
   <div class="main">
 
     <div class="topbar">
-      <div class="breadcrumb">
-        <span>VoiceAgents</span>
-        <span class="crumb-sep">/</span>
-        <span class="crumb-current">Tessa</span>
+      <div class="topbar-left">
+        <div class="breadcrumb">
+          <span>VoiceAgents</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-current">Tessa</span>
+        </div>
       </div>
-      <span class="credit-pill">Get 125$</span>
-    </div>
-
-    <div class="content">
-     <div class="content-inner">
-
-      <div class="view-toggle-row">
+      <div class="topbar-center">
         <div class="view-toggle" role="tablist" aria-label="View mode">
           <button class="view-btn active" data-view="form" type="button" role="tab">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
@@ -1398,6 +1665,19 @@
           </button>
         </div>
       </div>
+      <div class="topbar-right">
+        <a href="#" class="credit-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.5 17 14.5 18.5 21.5 12 18 5.5 21.5 7 14.5 2 9.5 9 8.5 12 2"/></svg>
+          Get 125$
+        </a>
+        <span class="topbar-balance">€0.00</span>
+        <span class="topbar-avatar" aria-label="Account">A</span>
+      </div>
+    </div>
+
+    <div class="content">
+     <div class="content-inner">
+
 
       <div class="card">
         <div class="agent-header">
@@ -1409,7 +1689,7 @@
                 <span class="badge badge-success"><span class="dot"></span>Active</span>
                 <span class="badge badge-pink"><span class="dot"></span>in 4 call workflows</span>
               </div>
-              <span class="agent-role">AI Receptionist · <span id="version-label">v12</span></span>
+              <span class="agent-role">AI Receptionist · <a class="link-action" href="#">Open Analytics</a></span>
             </div>
           </div>
           <div class="agent-actions">
@@ -1439,10 +1719,7 @@
         </div>
 
         <div class="card">
-          <div class="card-header card-header-stack">
-            <h2>Identity</h2>
-            <p class="card-subtitle">Who this agent is — name, voice, and language.</p>
-          </div>
+          <div class="card-header"><h2>Personality</h2></div>
           <div class="card-body">
             <div class="field">
               <label class="field-label">Name</label>
@@ -1450,33 +1727,74 @@
             </div>
             <div class="field">
               <label class="field-label">Language</label>
-              <input class="input form-input" type="text" value="English (US)" />
-              <p class="field-help">The agent will understand and reply in this language. Voices shown below support it.</p>
+              <div class="chip-input">
+                <span class="lang-chip"><span class="flag">🇺🇸</span>English (US)<span class="x">×</span></span>
+                <span class="lang-chip"><span class="flag">🇪🇸</span>Spanish (ES)<span class="x">×</span></span>
+              </div>
             </div>
             <div class="field">
               <div class="field-label-row">
                 <label class="field-label">Voice</label>
                 <a class="link-action" id="explore-voices">Explore more voices</a>
               </div>
-              <input class="input form-input" type="text" value="Aria — Warm, conversational" id="voice-input" readonly />
-              <div class="voice-section-label">Featured for English (US)</div>
-              <div class="voice-cards" id="voice-cards">
-                <div class="voice-card selected" data-voice="Aria" data-desc="Warm, conversational">
-                  <div class="voice-card-title">Aria</div>
-                  <div class="voice-card-desc">Warm, conversational</div>
-                  <div class="voice-tags">
-                    <span class="voice-tag">warm</span>
-                    <span class="voice-tag">conversational</span>
-                  </div>
+              <div class="chip-input">
+                <span class="lang-chip"><span class="flag">🇺🇸</span>English (US)<span class="x">×</span></span>
+                <span class="lang-chip"><span class="flag">🇪🇸</span>Spanish (ES)<span class="x">×</span></span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Greeting</label>
+              <input class="input form-input" type="text" value="Thanks for calling [Company Name]. How can I help today?" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Knowledge sources</h2>
+            <button class="btn btn-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add files
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="section-banner">
+              <span class="section-banner-text">Manage all sources in one place</span>
+              <a class="link-action" href="#">Open Knowledge Base</a>
+            </div>
+            <p class="field-help" style="margin: 0 0 10px;">4 documents uploaded — used by this agent to answer questions</p>
+            <div class="kb-list">
+              <div class="kb-item">
+                <div class="kb-icon">PDF</div>
+                <div class="kb-meta">
+                  <div class="kb-name">Tech-design-requirements.pdf</div>
+                  <div class="kb-info">200 KB <span class="dot-sep"></span> <span class="completed">✓ Complete</span></div>
                 </div>
-                <div class="voice-card" data-voice="Nova" data-desc="Crisp, professional">
-                  <div class="voice-card-title">Nova</div>
-                  <div class="voice-card-desc">Crisp, professional</div>
-                  <div class="voice-tags">
-                    <span class="voice-tag">professional</span>
-                    <span class="voice-tag">clear</span>
-                  </div>
+                <button class="btn btn-sm">Unlink from Agent</button>
+              </div>
+              <div class="kb-item">
+                <div class="kb-icon">PDF</div>
+                <div class="kb-meta">
+                  <div class="kb-name">Tech-design-requirements.pdf</div>
+                  <div class="kb-info">200 KB <span class="dot-sep"></span> <span class="completed">✓ Complete</span></div>
                 </div>
+                <button class="btn btn-sm">Unlink from Agent</button>
+              </div>
+              <div class="kb-item">
+                <div class="kb-icon">PDF</div>
+                <div class="kb-meta">
+                  <div class="kb-name">Tech-design-requirements.pdf</div>
+                  <div class="kb-info">200 KB <span class="dot-sep"></span> <span class="completed">✓ Complete</span></div>
+                </div>
+                <button class="btn btn-sm">Unlink from Agent</button>
+              </div>
+              <div class="kb-item">
+                <div class="kb-icon">PDF</div>
+                <div class="kb-meta">
+                  <div class="kb-name">Tech-design-requirements.pdf</div>
+                  <div class="kb-info">200 KB <span class="dot-sep"></span> <span class="completed">✓ Complete</span></div>
+                </div>
+                <button class="btn btn-sm">Unlink from Agent</button>
               </div>
             </div>
           </div>
@@ -1488,17 +1806,88 @@
             <div class="skill-list">
               <div class="skill-item">
                 <div>
-                  <div class="skill-title">Take a message</div>
+                  <div class="skill-title">Take a message <span class="skill-tag">Added</span></div>
                   <div class="skill-desc">Allows the caller to leave a message</div>
                 </div>
-                <span class="badge badge-success">Added</span>
+                <button class="btn btn-sm">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  Edit
+                </button>
               </div>
               <div class="skill-item">
                 <div>
-                  <div class="skill-title">Extract Data</div>
-                  <div class="skill-desc">Pull customer_name, phone</div>
+                  <div class="skill-title">Extract Data <span class="skill-tag">Added</span></div>
+                  <div class="skill-desc">Pull data from the conversation</div>
                 </div>
-                <span class="badge badge-success">Added</span>
+                <button class="btn btn-sm">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  Edit
+                </button>
+              </div>
+              <div class="skill-item">
+                <div>
+                  <div class="skill-title">Answer Questions</div>
+                  <div class="skill-desc">Based on attached knowledge base</div>
+                </div>
+                <button class="btn btn-sm">+ Add</button>
+              </div>
+              <div class="skill-item">
+                <div>
+                  <div class="skill-title">Transfer to Human</div>
+                  <div class="skill-desc">Routes caller to the right person at the right time</div>
+                </div>
+                <button class="btn btn-sm">+ Add</button>
+              </div>
+              <div class="skill-item">
+                <div>
+                  <div class="skill-title">Custom</div>
+                  <div class="skill-desc">Configure your own skill</div>
+                </div>
+                <button class="btn btn-sm">+ Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Scenarios</h2>
+            <button class="btn btn-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add scenario
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="scenario-list">
+              <div class="scenario-card">
+                <div class="scenario-head">
+                  <span class="scenario-tag">Template</span>
+                  <div class="scenario-icons">
+                    <button aria-label="Duplicate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    <button aria-label="Edit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+                    <button aria-label="Delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+                  </div>
+                </div>
+                <div class="scenario-row">
+                  <span class="label">When</span><span>Caller asks for booking link</span>
+                  <span class="label">Reply</span><span>"Let me send that to you via SMS."</span>
+                  <span class="label">Action</span><span>Send SMS</span>
+                </div>
+              </div>
+              <div class="scenario-card">
+                <div class="scenario-head">
+                  <span class="scenario-tag">Template</span>
+                  <div class="scenario-icons">
+                    <button aria-label="Duplicate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    <button aria-label="Edit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+                    <button aria-label="Delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+                  </div>
+                </div>
+                <div class="scenario-row">
+                  <span class="label">When</span><span>Caller asks for booking link</span>
+                  <span class="label">Reply</span><span>"Let me send that to you via SMS."</span>
+                  <span class="label">Action</span><span>Send SMS</span>
+                </div>
               </div>
             </div>
           </div>
