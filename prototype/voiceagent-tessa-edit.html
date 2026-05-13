@@ -2743,7 +2743,8 @@
     baselineText = stringify(baselineConfig);
     editorInput.value = baselineText;
     version++;
-    document.getElementById('version-label').textContent = 'v' + version + ' · just now';
+    const versionLabel = document.getElementById('version-label');
+    if (versionLabel) versionLabel.textContent = 'v' + version + ' · just now';
     onInput();
     closeImportModal();
     showToast('Configuration imported · v' + version);
@@ -2941,7 +2942,8 @@
     baselineText = stringify(baselineConfig);
     editorInput.value = baselineText;
     version++;
-    document.getElementById('version-label').textContent = 'v' + version + ' · just now';
+    const versionLabel = document.getElementById('version-label');
+    if (versionLabel) versionLabel.textContent = 'v' + version + ' · just now';
     onInput();
     showToast('Saved with defaults · v' + version);
     performViewChange('form');
@@ -3139,7 +3141,8 @@
     baselineText = stringify(baselineConfig);
     editorInput.value = baselineText;
     version++;
-    document.getElementById('version-label').textContent = 'v' + version + ' · just now';
+    const versionLabel = document.getElementById('version-label');
+    if (versionLabel) versionLabel.textContent = 'v' + version + ' · just now';
     onInput();
     closeSaveModal();
     showToast(hadFallbacks
