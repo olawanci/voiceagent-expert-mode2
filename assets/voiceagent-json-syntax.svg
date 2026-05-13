@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 946" width="900" height="946">
+  <rect x="0" y="0" width="900" height="946" rx="12" fill="#0f172a"/>
+  <line x1="68" y1="14" x2="68" y2="932" stroke="#1e293b" stroke-width="1"/>
+  <g font-family="JetBrains Mono, Menlo, Monaco, monospace" font-size="13" xml:space="preserve">
+    <text x="56" y="37" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">1</text>
+    <text x="78" y="37"><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="59" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">2</text>
+    <text x="78" y="59"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;$schema&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;voiceagent@1.4&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="81" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">3</text>
+    <text x="78" y="81"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;id&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;69872637-22f3-42e4-bcc6-7bffd660bc6a&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="103" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">4</text>
+    <text x="78" y="103"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;identity&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="125" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">5</text>
+    <text x="78" y="125"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;name&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;Tessa&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="147" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">6</text>
+    <text x="78" y="147"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;role&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;AI Receptionist&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="169" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">7</text>
+    <text x="78" y="169"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;languages&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">[</tspan></text>
+    <text x="56" y="191" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">8</text>
+    <text x="78" y="191"><tspan fill="#e2e8f0">      </tspan><tspan fill="#b6e5b6">&quot;en-GB&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="213" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">9</text>
+    <text x="78" y="213"><tspan fill="#e2e8f0">      </tspan><tspan fill="#b6e5b6">&quot;es-ES&quot;</tspan></text>
+    <text x="56" y="235" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">10</text>
+    <text x="78" y="235"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">]</tspan></text>
+    <text x="56" y="257" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">11</text>
+    <text x="78" y="257"><tspan fill="#e2e8f0">  </tspan><tspan fill="#94a3b8">}</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="279" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">12</text>
+    <text x="78" y="279"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;voice&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="301" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">13</text>
+    <text x="78" y="301"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;provider&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;elevenlabs&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="323" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">14</text>
+    <text x="78" y="323"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;voiceIds&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="345" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">15</text>
+    <text x="78" y="345"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;en-GB&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;amelia_v2&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="367" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">16</text>
+    <text x="78" y="367"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;es-ES&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;lucia&quot;</tspan></text>
+    <text x="56" y="389" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">17</text>
+    <text x="78" y="389"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">}</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="411" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">18</text>
+    <text x="78" y="411"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;speed&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#a5b4fc">1.0</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="433" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">19</text>
+    <text x="78" y="433"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;interruptible&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#f9a8d4">true</tspan></text>
+    <text x="56" y="455" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">20</text>
+    <text x="78" y="455"><tspan fill="#e2e8f0">  </tspan><tspan fill="#94a3b8">}</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="477" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">21</text>
+    <text x="78" y="477"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;behavior&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="499" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">22</text>
+    <text x="78" y="499"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;model&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;claude-sonnet-4-6&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="521" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">23</text>
+    <text x="78" y="521"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;tone&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;warm&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="543" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">24</text>
+    <text x="78" y="543"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;greeting&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;Thanks for calling </tspan><tspan fill="#fcd34d">${company.name}</tspan><tspan fill="#b6e5b6"> — how can I help today?&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="565" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">25</text>
+    <text x="78" y="565"><tspan fill="#e2e8f0">    </tspan><tspan fill="#93b8d8">&quot;maxTurnSec&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#a5b4fc">30</tspan></text>
+    <text x="56" y="587" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">26</text>
+    <text x="78" y="587"><tspan fill="#e2e8f0">  </tspan><tspan fill="#94a3b8">}</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="609" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">27</text>
+    <text x="78" y="609"><tspan fill="#e2e8f0">  </tspan><tspan fill="#93b8d8">&quot;skills&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">[</tspan></text>
+    <text x="56" y="631" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">28</text>
+    <text x="78" y="631"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="653" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">29</text>
+    <text x="78" y="653"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;name&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;take_message&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="675" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">30</text>
+    <text x="78" y="675"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;type&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;message&quot;</tspan></text>
+    <text x="56" y="697" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">31</text>
+    <text x="78" y="697"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">}</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="719" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">32</text>
+    <text x="78" y="719"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">{</tspan></text>
+    <text x="56" y="741" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">33</text>
+    <text x="78" y="741"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;name&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;extract_data&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="763" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">34</text>
+    <text x="78" y="763"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;type&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#b6e5b6">&quot;extract&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="785" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">35</text>
+    <text x="78" y="785"><tspan fill="#e2e8f0">      </tspan><tspan fill="#93b8d8">&quot;fields&quot;</tspan><tspan fill="#94a3b8">:</tspan><tspan fill="#e2e8f0"> </tspan><tspan fill="#94a3b8">[</tspan></text>
+    <text x="56" y="807" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">36</text>
+    <text x="78" y="807"><tspan fill="#e2e8f0">        </tspan><tspan fill="#b6e5b6">&quot;customer_name&quot;</tspan><tspan fill="#94a3b8">,</tspan></text>
+    <text x="56" y="829" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">37</text>
+    <text x="78" y="829"><tspan fill="#e2e8f0">        </tspan><tspan fill="#b6e5b6">&quot;phone&quot;</tspan></text>
+    <text x="56" y="851" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">38</text>
+    <text x="78" y="851"><tspan fill="#e2e8f0">      </tspan><tspan fill="#94a3b8">]</tspan></text>
+    <text x="56" y="873" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">39</text>
+    <text x="78" y="873"><tspan fill="#e2e8f0">    </tspan><tspan fill="#94a3b8">}</tspan></text>
+    <text x="56" y="895" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">40</text>
+    <text x="78" y="895"><tspan fill="#e2e8f0">  </tspan><tspan fill="#94a3b8">]</tspan></text>
+    <text x="56" y="917" fill="#475569" text-anchor="end" font-variant-numeric="tabular-nums">41</text>
+    <text x="78" y="917"><tspan fill="#94a3b8">}</tspan></text>
+  </g>
+</svg>

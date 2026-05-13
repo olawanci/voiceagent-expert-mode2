@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>VoiceAgents · Tessa · Toggle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --white: #ffffff;
+    --gray-25: #fcfcfd;
+    --gray-50: #f9f9fb;
+    --gray-100: #eff1f5;
+    --gray-200: #dcdfea;
+    --gray-300: #b9c0d4;
+    --gray-400: #7d89b0;
+    --gray-500: #5d6b98;
+    --gray-600: #4a5578;
+    --gray-700: #404968;
+    --gray-800: #30374f;
+    --gray-900: #111322;
+    --text-primary: #181d27;
+    --text-secondary: #414651;
+    --text-tertiary: #535862;
+    --border-primary: #d5d7da;
+    --neutral-50: #fafbff;
+    --brand-25: #f1f3ff;
+    --brand-100: #b1bcff;
+    --brand-500: #0527ff;
+    --brand-800: #021480;
+    --success-100: #dcfae6;
+    --success-500: #17b26a;
+    --success-600: #079455;
+    --error-600: #d92d20;
+    --pink-25: #fff4fd;
+    --pink-700: #d032af;
+    --shadow-card: 0 1px 7px 0 #00000008;
+    --r-md: 8px;
+    --r-xl: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--neutral-50);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.05px;
+  }
+  .app { display: flex; min-height: 100vh; }
+
+  /* Slim sidebar */
+  .sidebar {
+    width: 64px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-100);
+    flex-shrink: 0;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .sidebar .logo {
+    width: 32px; height: 32px;
+    background: var(--brand-500);
+    border-radius: 8px;
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .sidebar a {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+  }
+  .sidebar a:hover { background: var(--gray-50); color: var(--gray-800); }
+  .sidebar a.active { background: var(--brand-25); color: var(--brand-500); }
+
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  .topbar {
+    height: 56px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .breadcrumb .crumb-sep { color: var(--gray-300); }
+  .breadcrumb .crumb-current { color: var(--gray-900); }
+  .credit-pill {
+    background: var(--brand-25);
+    color: var(--brand-500);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .content {
+    flex: 1;
+    padding: 16px 24px 32px;
+    overflow-y: auto;
+  }
+  .content-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .view-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 16px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 12px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .card-body { padding: 0 20px 20px; }
+  .card h2 { font-size: 18px; font-weight: 500; margin: 0; }
+
+  /* Agent header */
+  .agent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+  .agent-id { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .agent-avatar {
+    width: 56px; height: 56px;
+    border-radius: var(--r-xl);
+    background: var(--gray-100);
+    color: var(--gray-700);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 16px;
+    flex-shrink: 0;
+  }
+  .agent-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .agent-name { font-size: 18px; font-weight: 500; }
+  .agent-role { font-size: 13px; color: var(--text-tertiary); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .badge-success { background: var(--success-100); color: var(--success-600); }
+  .badge-success .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--success-500); }
+  .badge-pink { background: var(--pink-25); color: var(--pink-700); }
+  .badge-pink .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--pink-700); }
+
+  .agent-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+  /* View toggle (Claude-style) */
+  .view-toggle {
+    display: inline-flex;
+    background: var(--gray-50);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 2px;
+  }
+  .view-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.15px;
+    transition: color 0.12s ease;
+  }
+  .view-btn:hover { color: var(--text-secondary); }
+  .view-btn.active {
+    background: var(--white);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.5px var(--border-primary), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .view-btn.active:hover { color: var(--text-primary); }
+  .view-btn .braces {
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+    color: var(--text-secondary);
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+  .btn:hover { background: var(--gray-50); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--brand-500);
+    border-color: var(--brand-500);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--brand-800); border-color: var(--brand-800); }
+  .btn-primary:disabled { background: var(--brand-100); border-color: var(--brand-100); }
+  .btn-danger {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+    background: #fef3f2;
+    border-color: #fecdca;
+    color: var(--error-600);
+  }
+  .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; }
+
+  /* Form fields */
+  .field { margin-bottom: 14px; }
+  .field-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 20px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 20px;
+    outline: none;
+  }
+  .input:focus {
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px var(--brand-25);
+  }
+  .field-changed { position: relative; }
+  .field-changed::after {
+    content: 'Updated';
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--success-600);
+    background: var(--success-100);
+    padding: 1px 7px;
+    border-radius: 999px;
+    line-height: 16px;
+  }
+
+  /* Skill items */
+  .skill-list { display: flex; flex-direction: column; gap: 8px; }
+  .skill-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    gap: 12px;
+  }
+  .skill-item.new { background: #ecfdf5; border-color: #a7f3d0; }
+  .skill-title { font-weight: 500; font-size: 14px; }
+  .skill-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* JSON view card */
+  .json-view-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .json-view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    background: var(--gray-25);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .json-view-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .json-view-title .icon-braces {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-tertiary);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .lines-count {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+  .json-view-actions { display: flex; gap: 6px; }
+
+  .json-view-body {
+    display: flex;
+    background: #0f172a;
+    font-family: 'JetBrains Mono', 'Menlo', 'Monaco', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #e2e8f0;
+    max-height: 640px;
+    overflow: auto;
+  }
+  .json-view-gutter {
+    padding: 14px 8px 14px 14px;
+    color: #475569;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid #1e293b;
+    min-width: 40px;
+    flex-shrink: 0;
+  }
+  .json-view-gutter div { line-height: 1.7; }
+  .json-view-code {
+    padding: 14px 0;
+    flex: 1;
+    overflow-x: auto;
+    min-width: 0;
+  }
+  .json-line {
+    display: block;
+    white-space: pre;
+    padding: 0 18px;
+  }
+  .json-line .key { color: #93b8d8; }
+  .json-line .str { color: #b6e5b6; }
+  .json-line .num { color: #a5b4fc; }
+  .json-line .bool { color: #f9a8d4; }
+  .json-line .punc { color: #94a3b8; }
+  .json-line .tpl {
+    background: rgba(251, 191, 36, 0.18);
+    color: #fcd34d;
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    padding: 24px;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--white);
+    border-radius: var(--r-xl);
+    width: 720px;
+    max-width: 100%;
+    max-height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.25);
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .modal-header h2 { font-size: 18px; font-weight: 500; margin: 0 0 4px; }
+  .modal-header p { font-size: 13px; color: var(--text-tertiary); margin: 0; line-height: 1.5; }
+  .modal-body { padding: 18px 22px; overflow-y: auto; }
+  .modal-footer {
+    padding: 14px 22px;
+    border-top: 1px solid var(--gray-100);
+    background: var(--gray-25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .modal-footer .footer-info { font-size: 12px; color: var(--text-tertiary); }
+  .modal-footer .footer-info.error { color: var(--error-600); }
+  .modal-footer .footer-info.ok { color: var(--success-600); }
+  .modal-footer .actions { display: flex; gap: 6px; }
+  .icon-btn-sm {
+    width: 28px; height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--gray-500);
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-btn-sm:hover { background: var(--gray-50); color: var(--gray-800); }
+
+  .paste-area {
+    width: 100%;
+    min-height: 240px;
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    resize: vertical;
+    outline: none;
+    tab-size: 2;
+  }
+  .paste-area::placeholder { color: #64748b; }
+  .paste-area:focus {
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px var(--brand-25);
+  }
+  .paste-hint {
+    margin: 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .link-btn {
+    background: none;
+    border: none;
+    color: var(--brand-500);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+  }
+  .link-btn:hover { text-decoration: underline; }
+
+  .validation-strip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: #065f46;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .validation-strip .ok-dot {
+    width: 18px; height: 18px;
+    border-radius: 999px;
+    background: var(--success-500);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 11px;
+    margin-top: 1px;
+  }
+  .diff-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 12px;
+    line-height: 1.55;
+  }
+  .diff-meta strong { font-weight: 500; }
+  .diff-list {
+    border: 1px solid var(--gray-100);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 12.5px;
+    line-height: 1.85;
+    background: var(--white);
+  }
+  .diff-list .removed {
+    padding: 4px 14px;
+    background: #fef2f2;
+    color: #991b1b;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .diff-list .added {
+    padding: 4px 14px;
+    background: #ecfdf5;
+    color: #065f46;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text-primary);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.3);
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast .ok-dot {
+    width: 14px; height: 14px;
+    border-radius: 999px;
+    background: var(--success-500);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 9px;
+  }
+
+  [hidden] { display: none !important; }
+
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 1024px) {
+    .content { padding: 14px 20px 28px; }
+    .json-view-body { max-height: 540px; }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .topbar { padding: 0 16px; }
+    .credit-pill { display: none; }
+    .content { padding: 12px 16px 24px; }
+    .card-header { padding: 14px 16px; }
+    .card-body { padding: 0 16px 16px; }
+
+    .agent-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      padding: 16px;
+    }
+    .agent-id { gap: 12px; }
+    .agent-actions { flex-wrap: wrap; gap: 8px; }
+    .agent-actions .btn-primary { flex: 1; min-width: 0; justify-content: center; }
+    .view-toggle-row { margin: 0 0 12px; }
+
+    .json-view-header { flex-wrap: wrap; }
+    .json-view-actions { flex: 1; justify-content: flex-end; }
+    .json-view-body { max-height: 480px; font-size: 12px; }
+
+    .modal-backdrop { padding: 0; align-items: flex-end; }
+    .modal { width: 100%; max-height: calc(100vh - 24px); border-radius: 16px 16px 0 0; }
+    .modal-header { padding: 16px 18px; }
+    .modal-body { padding: 16px 18px; }
+    .modal-footer { padding: 12px 18px; flex-wrap: wrap; gap: 10px; }
+    .modal-footer .footer-info { width: 100%; }
+    .modal-footer .actions { width: 100%; justify-content: flex-end; }
+  }
+
+  @media (max-width: 480px) {
+    .topbar { height: 52px; padding: 0 12px; }
+    .breadcrumb { font-size: 13px; gap: 6px; }
+    .content { padding: 10px 12px 20px; }
+    .agent-header { padding: 14px; }
+    .agent-name { font-size: 16px; }
+    .agent-avatar { width: 48px; height: 48px; font-size: 14px; }
+    .view-btn { font-size: 12px; padding: 6px 10px; }
+    .card-header { padding: 12px 14px; }
+    .card-body { padding: 0 14px 14px; }
+    .json-view-body { font-size: 11.5px; max-height: 420px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="logo">CT</div>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></a>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg></a>
+    <a href="#" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></a>
+  </aside>
+
+  <div class="main">
+
+    <div class="topbar">
+      <div class="breadcrumb">
+        <span>VoiceAgents</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Tessa</span>
+      </div>
+      <span class="credit-pill">Get 125$</span>
+    </div>
+
+    <div class="content">
+     <div class="content-inner">
+
+      <div class="view-toggle-row">
+        <div class="view-toggle" role="tablist" aria-label="View mode">
+          <button class="view-btn active" data-view="form" type="button" role="tab">Form</button>
+          <button class="view-btn" data-view="json" type="button" role="tab"><span class="braces">&lt;/&gt;</span></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="agent-header">
+          <div class="agent-id">
+            <div class="agent-avatar">AI</div>
+            <div>
+              <div class="agent-name-row">
+                <span class="agent-name">Tessa</span>
+                <span class="badge badge-success"><span class="dot"></span>Active</span>
+                <span class="badge badge-pink"><span class="dot"></span>in 4 call workflows</span>
+              </div>
+              <span class="agent-role">AI Receptionist · <span id="version-label">v12</span></span>
+            </div>
+          </div>
+          <div class="agent-actions">
+            <button class="btn btn-primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+              Test VoiceAgent
+            </button>
+            <button class="btn btn-danger" aria-label="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-form">
+
+        <div class="card">
+          <div class="card-header"><h2>Personality</h2></div>
+          <div class="card-body">
+            <div class="field">
+              <label class="field-label">Name</label>
+              <input class="input" type="text" value="Tessa" />
+            </div>
+            <div class="field" id="field-tone">
+              <label class="field-label">Tone</label>
+              <input class="input" type="text" value="warm" id="input-tone" />
+            </div>
+            <div class="field" id="field-speed">
+              <label class="field-label">Voice speed</label>
+              <input class="input" type="text" value="1.0x" id="input-speed" />
+            </div>
+            <div class="field" id="field-greeting">
+              <label class="field-label">Greeting</label>
+              <input class="input" type="text" id="input-greeting" value="Thanks for calling — how can I help today?" style="color: var(--brand-500);" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Skills</h2></div>
+          <div class="card-body">
+            <div class="skill-list" id="skills-list">
+              <div class="skill-item">
+                <div>
+                  <div class="skill-title">Take a message</div>
+                  <div class="skill-desc">Allows the caller to leave a message</div>
+                </div>
+                <span class="badge badge-success">Added</span>
+              </div>
+              <div class="skill-item">
+                <div>
+                  <div class="skill-title">Extract Data</div>
+                  <div class="skill-desc">Pull customer_name, phone</div>
+                </div>
+                <span class="badge badge-success">Added</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="view-json" hidden>
+        <div class="card json-view-card">
+          <div class="json-view-header">
+            <div class="json-view-title">
+              <span class="icon-braces">{ }</span>
+              <span>Configuration</span>
+              <span class="lines-count" id="lines-count">read-only</span>
+            </div>
+            <div class="json-view-actions">
+              <button class="btn btn-sm" id="copy-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+              <button class="btn btn-sm" id="import-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Import
+              </button>
+            </div>
+          </div>
+          <div class="json-view-body">
+            <div class="json-view-gutter" id="json-gutter"></div>
+            <div class="json-view-code" id="json-code"></div>
+          </div>
+        </div>
+      </div>
+
+     </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-title">Import configuration</h2>
+          <p>Paste a JSON config from Claude or from another agent. Changes will be reviewed before applying.</p>
+        </div>
+        <button id="close-modal" class="icon-btn-sm" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div id="step-paste" class="modal-body">
+        <textarea id="paste-area" class="paste-area" placeholder="Paste a configuration JSON here..."></textarea>
+        <div class="paste-hint">
+          <span>Validated against voiceagent@1.4 schema before applying.</span>
+          <button id="paste-sample" class="link-btn">Paste sample (Claude-modified) →</button>
+        </div>
+      </div>
+
+      <div id="step-diff" class="modal-body" hidden>
+        <div class="validation-strip">
+          <span class="ok-dot">✓</span>
+          <span><strong>Valid</strong> — JSON conforms to voiceagent@1.4 schema. Review the changes before applying.</span>
+        </div>
+        <p class="diff-meta"><strong id="diff-count">8 changes</strong> vs current saved version (v12 · 2 days ago)</p>
+        <div class="diff-list" id="diff-list"></div>
+      </div>
+
+      <div class="modal-footer">
+        <span class="footer-info" id="footer-info">Empty</span>
+        <div class="actions">
+          <button id="cancel-import" class="btn btn-sm">Cancel</button>
+          <button id="back-paste" class="btn btn-sm" hidden>Back</button>
+          <button id="validate-btn" class="btn btn-sm btn-primary" disabled>Validate</button>
+          <button id="apply-btn" class="btn btn-sm btn-primary" hidden>Apply changes</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast">
+    <span class="ok-dot">✓</span>
+    <span id="toast-text">Configuration applied · v13</span>
+  </div>
+
+</div>
+
+<script>
+(function () {
+
+  const ORIGINAL_CONFIG = {
+    "$schema": "voiceagent@1.4",
+    "id": "69872637-22f3-42e4-bcc6-7bffd660bc6a",
+    "identity": {
+      "name": "Tessa",
+      "role": "AI Receptionist",
+      "languages": ["en-GB", "es-ES"]
+    },
+    "voice": {
+      "provider": "elevenlabs",
+      "voiceIds": { "en-GB": "amelia_v2", "es-ES": "lucia" },
+      "speed": 1.0,
+      "interruptible": true
+    },
+    "behavior": {
+      "model": "claude-sonnet-4-6",
+      "tone": "warm",
+      "greeting": "Thanks for calling — how can I help today?",
+      "maxTurnSec": 30
+    },
+    "transcriber": {
+      "provider": "deepgram",
+      "language": "en",
+      "fallbackPlan": { "autoFallback": { "enabled": true } },
+      "confidenceThreshold": 0.4
+    },
+    "skills": [
+      { "name": "take_message", "type": "message" },
+      { "name": "extract_data", "type": "extract", "fields": ["customer_name", "phone"] }
+    ],
+    "scenarios": [
+      {
+        "trigger": "caller asks for booking link",
+        "reply": "Let me send that to you via SMS.",
+        "action": { "type": "send_sms", "template": "${booking.smsTemplate}" }
+      }
+    ],
+    "clientMessages": ["conversation-update", "function-call", "transcript", "tool-calls"]
+  };
+
+  const CLAUDE_MODIFIED = {
+    "$schema": "voiceagent@1.4",
+    "id": "69872637-22f3-42e4-bcc6-7bffd660bc6a",
+    "identity": {
+      "name": "Tessa",
+      "role": "AI Receptionist",
+      "languages": ["en-GB", "es-ES"]
+    },
+    "voice": {
+      "provider": "elevenlabs",
+      "voiceIds": { "en-GB": "amelia_v2", "es-ES": "lucia" },
+      "speed": 1.15,
+      "interruptible": true
+    },
+    "behavior": {
+      "model": "claude-sonnet-4-6",
+      "tone": "empathetic",
+      "greeting": "Thanks for calling ${company.name} — how can I help today?",
+      "maxTurnSec": 30
+    },
+    "transcriber": {
+      "provider": "deepgram",
+      "language": "en",
+      "fallbackPlan": { "autoFallback": { "enabled": true } },
+      "confidenceThreshold": 0.4
+    },
+    "skills": [
+      { "name": "take_message", "type": "message" },
+      { "name": "extract_data", "type": "extract", "fields": ["customer_name", "phone"] },
+      { "name": "transfer_to_billing", "type": "transfer", "to": "${company.billingNumber}" }
+    ],
+    "scenarios": [
+      {
+        "trigger": "caller asks for booking link",
+        "reply": "Let me send that to you via SMS.",
+        "action": { "type": "send_sms", "template": "${booking.smsTemplate}" }
+      },
+      {
+        "trigger": "caller frustrated or needs human",
+        "reply": "I understand. Let me transfer you to a teammate right away.",
+        "action": { "type": "transfer", "skill": "transfer_to_billing" }
+      }
+    ],
+    "clientMessages": ["conversation-update", "function-call", "transcript", "tool-calls", "transfer-update"]
+  };
+
+  const DIFF = [
+    { type: 'removed', text: '−  voice.speed: 1.0' },
+    { type: 'added',   text: '+  voice.speed: 1.15' },
+    { type: 'removed', text: '−  behavior.tone: "warm"' },
+    { type: 'added',   text: '+  behavior.tone: "empathetic"' },
+    { type: 'removed', text: '−  behavior.greeting: "Thanks for calling — how can I help today?"' },
+    { type: 'added',   text: '+  behavior.greeting: "Thanks for calling ${company.name} — how can I help today?"' },
+    { type: 'added',   text: '+  skills[2]: transfer_to_billing (transfer)' },
+    { type: 'added',   text: '+  scenarios[1]: trigger "caller frustrated or needs human"' }
+  ];
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>]/g, c => c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;');
+  }
+
+  function syntaxHighlight(jsonString) {
+    let s = escapeHtml(jsonString);
+    s = s.replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="key">$1</span><span class="punc">$2</span>');
+    s = s.replace(/:\s*(\$\{[^}]+\})/g, (_, v) => ': <span class="tpl">' + v + '</span>');
+    s = s.replace(/("(?:[^"\\]|\\.)*")(?=\s*[,\]\n}])/g, m => {
+      if (m.indexOf('${') !== -1) {
+        const inner = m.replace(/(\$\{[^}]+\})/g, '<span class="tpl">$1</span>');
+        return '<span class="str">' + inner + '</span>';
+      }
+      return '<span class="str">' + m + '</span>';
+    });
+    s = s.replace(/\b(true|false|null)\b/g, '<span class="bool">$1</span>');
+    s = s.replace(/(?<![\w."])(-?\d+\.?\d*)(?![\w"])/g, '<span class="num">$1</span>');
+    s = s.replace(/([{}\[\],])/g, '<span class="punc">$1</span>');
+    return s;
+  }
+
+  function renderJson(config) {
+    const text = JSON.stringify(config, null, 2);
+    const lines = text.split('\n');
+    const gutter = document.getElementById('json-gutter');
+    let g = '';
+    for (let i = 1; i <= lines.length; i++) g += '<div>' + i + '</div>';
+    gutter.innerHTML = g;
+    const codeHtml = lines.map(line => '<div class="json-line">' + syntaxHighlight(line) + '</div>').join('');
+    document.getElementById('json-code').innerHTML = codeHtml;
+    document.getElementById('lines-count').textContent = lines.length + ' lines · read-only';
+  }
+
+  let currentConfig = ORIGINAL_CONFIG;
+  renderJson(currentConfig);
+
+  // View toggle
+  const viewBtns = document.querySelectorAll('.view-btn');
+  const viewForm = document.getElementById('view-form');
+  const viewJson = document.getElementById('view-json');
+
+  function setView(view) {
+    viewBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    viewForm.hidden = view !== 'form';
+    viewJson.hidden = view !== 'json';
+  }
+  viewBtns.forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+
+  // Copy
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const text = JSON.stringify(currentConfig, null, 2);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    showToast('Configuration copied to clipboard');
+  });
+
+  // Modal
+  const modal = document.getElementById('modal');
+  const stepPaste = document.getElementById('step-paste');
+  const stepDiff = document.getElementById('step-diff');
+  const pasteArea = document.getElementById('paste-area');
+  const validateBtn = document.getElementById('validate-btn');
+  const applyBtn = document.getElementById('apply-btn');
+  const cancelBtn = document.getElementById('cancel-import');
+  const backBtn = document.getElementById('back-paste');
+  const closeModalBtn = document.getElementById('close-modal');
+  const importBtn = document.getElementById('import-btn');
+  const pasteSampleBtn = document.getElementById('paste-sample');
+  const footerInfo = document.getElementById('footer-info');
+  const diffList = document.getElementById('diff-list');
+  const diffCount = document.getElementById('diff-count');
+
+  function openModal() {
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('open'));
+    showPasteStep();
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    setTimeout(() => {
+      modal.hidden = true;
+      pasteArea.value = '';
+      validateBtn.disabled = true;
+      footerInfo.textContent = 'Empty';
+      footerInfo.className = 'footer-info';
+    }, 180);
+  }
+  function showPasteStep() {
+    stepPaste.hidden = false;
+    stepDiff.hidden = true;
+    validateBtn.hidden = false;
+    applyBtn.hidden = true;
+    backBtn.hidden = true;
+    cancelBtn.hidden = false;
+  }
+  function showDiffStep() {
+    stepPaste.hidden = true;
+    stepDiff.hidden = false;
+    validateBtn.hidden = true;
+    applyBtn.hidden = false;
+    backBtn.hidden = false;
+    cancelBtn.hidden = true;
+    diffList.innerHTML = DIFF.map(d => '<div class="' + d.type + '">' + escapeHtml(d.text) + '</div>').join('');
+    diffCount.textContent = DIFF.length + ' changes';
+    footerInfo.textContent = DIFF.length + ' changes ready to apply';
+    footerInfo.className = 'footer-info ok';
+  }
+
+  importBtn.addEventListener('click', openModal);
+  closeModalBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  backBtn.addEventListener('click', showPasteStep);
+
+  pasteArea.addEventListener('input', () => {
+    const v = pasteArea.value.trim();
+    validateBtn.disabled = (v.length === 0);
+    if (v.length === 0) {
+      footerInfo.textContent = 'Empty';
+      footerInfo.className = 'footer-info';
+    } else {
+      footerInfo.textContent = pasteArea.value.split('\n').length + ' lines · click Validate to check';
+      footerInfo.className = 'footer-info';
+    }
+  });
+
+  pasteSampleBtn.addEventListener('click', () => {
+    pasteArea.value = JSON.stringify(CLAUDE_MODIFIED, null, 2);
+    pasteArea.dispatchEvent(new Event('input'));
+  });
+
+  validateBtn.addEventListener('click', () => {
+    const v = pasteArea.value.trim();
+    let parsed;
+    try {
+      parsed = JSON.parse(v);
+    } catch (e) {
+      footerInfo.textContent = 'Invalid JSON: ' + e.message;
+      footerInfo.className = 'footer-info error';
+      return;
+    }
+    if (!parsed.$schema || !parsed.identity || !parsed.voice || !parsed.behavior) {
+      footerInfo.textContent = 'Schema check failed: required sections missing.';
+      footerInfo.className = 'footer-info error';
+      return;
+    }
+    showDiffStep();
+  });
+
+  applyBtn.addEventListener('click', () => {
+    currentConfig = CLAUDE_MODIFIED;
+    renderJson(currentConfig);
+
+    document.getElementById('input-tone').value = 'empathetic';
+    document.getElementById('field-tone').classList.add('field-changed');
+    document.getElementById('input-speed').value = '1.15x';
+    document.getElementById('field-speed').classList.add('field-changed');
+    document.getElementById('input-greeting').value = 'Thanks for calling ${company.name} — how can I help today?';
+    document.getElementById('field-greeting').classList.add('field-changed');
+
+    const skillsList = document.getElementById('skills-list');
+    if (!document.getElementById('skill-transfer')) {
+      const s = document.createElement('div');
+      s.className = 'skill-item new';
+      s.id = 'skill-transfer';
+      s.innerHTML = '<div><div class="skill-title">Transfer to Billing</div><div class="skill-desc">Transfer to ${company.billingNumber}</div></div><span class="badge badge-success">Just added</span>';
+      skillsList.appendChild(s);
+    }
+
+    document.getElementById('version-label').textContent = 'v13 · just now';
+
+    closeModal();
+    showToast('Configuration applied · v13');
+  });
+
+  function showToast(text) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = text;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
+})();
+</script>
+</body>
+</html>

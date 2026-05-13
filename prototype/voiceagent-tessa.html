@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1336, initial-scale=1" />
+<title>VoiceAgents · Tessa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --white: #ffffff;
+    --gray-25: #fcfcfd;
+    --gray-50: #f9f9fb;
+    --gray-100: #eff1f5;
+    --gray-200: #dcdfea;
+    --gray-300: #b9c0d4;
+    --gray-400: #7d89b0;
+    --gray-500: #5d6b98;
+    --gray-600: #4a5578;
+    --gray-700: #404968;
+    --gray-800: #30374f;
+    --gray-900: #111322;
+    --text-primary: #181d27;
+    --text-secondary: #414651;
+    --text-tertiary: #535862;
+    --border-primary: #d5d7da;
+    --neutral-50: #fafbff;
+    --neutral-100: #f1f5f9;
+    --neutral-200: #e4eaf1;
+    --neutral-300: #cbd5e1;
+    --neutral-600: #475569;
+    --neutral-900: #0f172a;
+    --brand-25: #f1f3ff;
+    --brand-100: #b1bcff;
+    --brand-500: #0527ff;
+    --brand-800: #021480;
+    --success-100: #dcfae6;
+    --success-500: #17b26a;
+    --success-600: #079455;
+    --error-600: #d92d20;
+    --pink-25: #fff4fd;
+    --pink-700: #d032af;
+    --green-100: #f3ffde;
+    --teal-50: #ccf9f9;
+    --teal-700: #27b0b0;
+    --shadow-card: 0 1px 7px 0 #00000008;
+    --r-md: 8px;
+    --r-xl: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--neutral-50);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.05px;
+  }
+  .app { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-100);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+    gap: 4px;
+  }
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 16px;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.3px;
+    color: var(--gray-900);
+  }
+  .collapse-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--gray-500);
+    border-radius: 4px;
+  }
+  .collapse-btn:hover { background: var(--gray-50); }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 12px 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 20px;
+  }
+  .nav-item:hover { background: var(--gray-50); }
+  .nav-item.active {
+    background: var(--brand-25);
+    color: var(--brand-500);
+  }
+  .nav-item .chev { margin-left: auto; opacity: 0.5; }
+  .nav-item svg { flex-shrink: 0; }
+  .sidebar-footer { margin-top: auto; }
+
+  /* Main */
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  /* Top bar */
+  .topbar {
+    height: 56px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .breadcrumb .back-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .breadcrumb .crumb-sep { color: var(--gray-300); }
+  .breadcrumb .crumb-current { color: var(--gray-900); }
+  .topbar-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .credit-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--brand-25);
+    color: var(--brand-500);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .icon-btn {
+    width: 32px; height: 32px;
+    border-radius: 999px;
+    border: 1px solid var(--gray-100);
+    background: var(--white);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-600);
+  }
+  .icon-btn:hover { background: var(--gray-50); }
+  .user-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 2px 4px 2px 2px;
+    border-radius: 999px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+  }
+  .avatar-sm {
+    width: 28px; height: 28px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f7c1c1, #f09595);
+    background-clip: padding-box;
+    flex-shrink: 0;
+  }
+  .user-credit { font-size: 12px; font-weight: 500; color: var(--gray-700); padding-right: 8px; }
+
+  /* Content scroll */
+  .content {
+    flex: 1;
+    padding: 16px 24px 32px;
+    overflow-y: auto;
+    background: var(--neutral-50);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 12px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .card-body { padding: 16px 20px 20px; }
+  .card h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--text-primary);
+    letter-spacing: 0;
+  }
+
+  /* Agent header card */
+  .agent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .agent-id { display: flex; align-items: center; gap: 14px; }
+  .agent-avatar {
+    width: 56px; height: 56px;
+    border-radius: var(--r-xl);
+    background: var(--gray-100);
+    color: var(--gray-700);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .agent-meta { display: flex; flex-direction: column; gap: 4px; }
+  .agent-name-row { display: flex; align-items: center; gap: 8px; }
+  .agent-name { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .badge-success {
+    background: var(--success-100);
+    color: var(--success-600);
+  }
+  .badge-success .dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--success-500);
+  }
+  .badge-pink {
+    background: var(--pink-25);
+    color: var(--pink-700);
+  }
+  .badge-pink .dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--pink-700);
+  }
+  .badge-template {
+    background: var(--green-100);
+    color: #4d7c0f;
+  }
+  .badge-template .dot {
+    width: 6px; height: 6px; border-radius: 999px; background: #65a30d;
+  }
+  .badge-added {
+    background: var(--green-100);
+    color: #4d7c0f;
+    padding: 1px 8px;
+    font-size: 11px;
+  }
+  .agent-role { font-size: 13px; color: var(--text-tertiary); }
+  .link-inline {
+    color: var(--brand-500);
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .link-inline:hover { text-decoration: underline; }
+  .agent-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+    color: var(--text-secondary);
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+  .btn:hover { background: var(--gray-50); }
+  .btn-primary {
+    background: var(--brand-500);
+    border-color: var(--brand-500);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--brand-800); border-color: var(--brand-800); }
+  .btn-danger {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+    background: #fef3f2;
+    border-color: #fecdca;
+    color: var(--error-600);
+  }
+  .btn-danger:hover { background: #fee4e2; }
+  .btn-sm {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .btn-icon {
+    width: 30px;
+    padding: 0;
+    justify-content: center;
+  }
+  .btn-split {
+    display: inline-flex;
+  }
+  .btn-split .btn { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .btn-split .btn + .btn {
+    border-top-left-radius: 0; border-bottom-left-radius: 0;
+    border-left: 0;
+    width: 32px; padding: 0; justify-content: center;
+  }
+
+  /* Form fields */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 20px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .input,
+  .select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 20px;
+    letter-spacing: 0.05px;
+    outline: none;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+  .input:hover, .select:hover { border-color: var(--gray-300); }
+  .input:focus, .select:focus {
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px var(--brand-25);
+  }
+  .input::placeholder { color: var(--gray-400); }
+  .chips-input {
+    width: 100%;
+    min-height: 40px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    cursor: text;
+    position: relative;
+  }
+  .chips-input.with-caret { padding-right: 36px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px 2px 6px;
+    border-radius: 6px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    font-size: 12px;
+    color: var(--gray-800);
+    line-height: 16px;
+    letter-spacing: 0.25px;
+  }
+  .chip .flag {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .chip .flag.gb { background: linear-gradient(180deg, #012169 33%, #fff 33% 66%, #C8102E 66%); }
+  .chip .flag.es { background: linear-gradient(180deg, #AA151B 25%, #F1BF00 25% 75%, #AA151B 75%); }
+  .chip .x {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--gray-500);
+    padding: 0;
+    width: 16px; height: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 3px;
+  }
+  .chip .x:hover { background: var(--gray-100); }
+  .caret {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-500);
+    pointer-events: none;
+  }
+
+  /* Knowledge banner */
+  .info-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--brand-25);
+    border: 1px solid var(--brand-100);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+  .info-banner .left {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--brand-800);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .meta-row {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  /* File list */
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    background: var(--white);
+    margin-bottom: 8px;
+  }
+  .file-row:last-child { margin-bottom: 0; }
+  .file-info { display: flex; align-items: center; gap: 12px; }
+  .file-icon {
+    width: 36px; height: 44px;
+    background: #fef3f2;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--error-600);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid #fecdca;
+  }
+  .file-icon::before {
+    content: '';
+    display: block;
+    width: 24px; height: 22px;
+    border: 1.5px solid currentColor;
+    border-radius: 1px;
+    margin-bottom: 2px;
+    background: var(--white);
+  }
+  .file-meta { display: flex; flex-direction: column; gap: 2px; }
+  .file-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .file-detail {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text-tertiary);
+  }
+  .file-detail .complete {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--success-600);
+    font-weight: 500;
+  }
+
+  /* Skill row */
+  .skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .skill-row:last-child { margin-bottom: 0; }
+  .skill-info { display: flex; flex-direction: column; gap: 2px; }
+  .skill-title-row { display: flex; align-items: center; gap: 8px; }
+  .skill-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .skill-desc { font-size: 12px; color: var(--text-tertiary); }
+  .skill-actions { display: flex; align-items: center; gap: 6px; }
+
+  /* Scenarios */
+  .scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .scenario-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .scenario-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .scenario-actions { display: flex; gap: 4px; }
+  .scenario-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-500);
+    padding: 4px;
+    border-radius: 4px;
+  }
+  .scenario-actions button:hover { background: var(--gray-50); }
+  .scenario-line {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 20px;
+    margin-bottom: 4px;
+  }
+  .scenario-line:last-child { margin-bottom: 0; }
+  .scenario-key {
+    color: var(--text-tertiary);
+    font-weight: 500;
+    min-width: 52px;
+    flex-shrink: 0;
+  }
+  .scenario-val {
+    color: var(--text-primary);
+    flex: 1;
+  }
+  .scenario-val em {
+    color: var(--text-tertiary);
+    font-style: normal;
+  }
+
+  /* Help footer in sidebar */
+  .help-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px;
+    border-top: 1px solid var(--gray-100);
+    color: var(--gray-700);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* Mode toggle */
+  .mode-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 2px;
+    background: var(--gray-50);
+    margin-right: 8px;
+  }
+  .mode-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.15px;
+  }
+  .mode-btn.active {
+    background: var(--white);
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+
+  /* Expert view */
+  .expert-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .expert-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    gap: 16px;
+  }
+  .expert-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+  .expert-header .sub {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+    line-height: 18px;
+  }
+  .expert-header .sub a {
+    color: var(--brand-500);
+    text-decoration: underline;
+  }
+  .expert-header-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .expert-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--gray-100);
+    background: var(--white);
+  }
+  .expert-tab {
+    border: none;
+    background: transparent;
+    padding: 11px 14px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    letter-spacing: 0.15px;
+  }
+  .expert-tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+  .expert-tab .count {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 6px;
+    font-size: 11px;
+    background: var(--brand-25);
+    color: var(--brand-500);
+    border-radius: 8px;
+    line-height: 16px;
+  }
+
+  .json-editor-wrap { padding: 16px 20px 0; }
+  .json-editor {
+    background: #1a2332;
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', 'Menlo', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e2e8f0;
+    white-space: pre;
+    overflow: auto;
+    max-height: 480px;
+    tab-size: 2;
+  }
+  .json-editor .key { color: #93b8d8; }
+  .json-editor .str { color: #b6e5b6; }
+  .json-editor .num { color: #a5b4fc; }
+  .json-editor .bool { color: #f9a8d4; }
+  .json-editor .tpl {
+    background: rgba(251, 191, 36, 0.18);
+    color: #fcd34d;
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+  .json-editor .warn {
+    background: rgba(251, 191, 36, 0.18);
+    border-bottom: 1px dashed #fbbf24;
+  }
+  .json-editor .punc { color: #94a3b8; }
+
+  .warn-strip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 20px;
+    background: #fef3c7;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 12px;
+    color: #854d0e;
+    line-height: 18px;
+  }
+  .warn-strip code {
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    background: rgba(133, 77, 14, 0.08);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+  .warn-strip .icon-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ba7517;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .examples-row {
+    display: flex;
+    gap: 6px;
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .examples-label {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-right: 4px;
+  }
+  .example-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 999px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    line-height: 16px;
+    letter-spacing: 0.25px;
+  }
+  .example-pill:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-300);
+  }
+
+  .format-btn {
+    width: calc(100% - 40px);
+    margin: 0 20px 16px;
+    padding: 10px 14px;
+    background: var(--white);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    letter-spacing: 0.15px;
+    line-height: 20px;
+  }
+  .format-btn:hover { background: var(--gray-50); }
+
+  .compiled-prompt {
+    margin: 16px 20px;
+    padding: 18px 22px;
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    background: var(--gray-25);
+    border-radius: 8px;
+    border: 1px solid var(--gray-100);
+  }
+  .compiled-prompt .var {
+    background: rgba(251, 191, 36, 0.15);
+    color: #92400e;
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+  .compiled-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .diff-list {
+    margin: 16px 20px;
+    border: 1px solid var(--gray-100);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 12px;
+    line-height: 1.9;
+  }
+  .diff-list .removed {
+    padding: 4px 14px;
+    background: #fef2f2;
+    color: #991b1b;
+  }
+  .diff-list .added {
+    padding: 4px 14px;
+    background: #ecfdf5;
+    color: #065f46;
+  }
+  .diff-meta {
+    margin: 16px 20px 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+
+  .expert-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--gray-25);
+    border-top: 1px solid var(--gray-100);
+  }
+  .expert-footer .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+  .expert-footer .status .sdot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #ba7517;
+  }
+  .expert-footer .actions { display: flex; gap: 6px; }
+  .btn-save-primary {
+    background: var(--brand-500);
+    color: var(--white);
+    border-color: var(--brand-500);
+  }
+  .btn-save-primary:hover {
+    background: var(--brand-800);
+    border-color: var(--brand-800);
+  }
+
+  .claude-card {
+    background: var(--white);
+    border: 1px solid var(--brand-100);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-card);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+  .claude-card .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .claude-card .label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--brand-500);
+  }
+  .claude-card .meta {
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+  .claude-card .msg {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .claude-card .msg code {
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 12px;
+    background: var(--gray-50);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .claude-card .actions { display: flex; gap: 6px; }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo">CLOUDTALK</span>
+      <button class="collapse-btn" aria-label="Collapse sidebar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+      </button>
+    </div>
+
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call Monitor
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      Analytics
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><polyline points="7 7 17 7 17 17"/></svg>
+    </a>
+
+    <div class="nav-section-label">Company</div>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Users
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      Groups
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Contacts
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+      Numbers
+    </a>
+
+    <div class="nav-section-label">Operations</div>
+    <a class="nav-item active" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      VoiceAgents
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+      Dialer
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+
+    <div class="nav-section-label">Settings</div>
+    <a class="nav-item" href="#">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></svg>
+      Account
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="help-row">
+        <span style="display: inline-flex; align-items: center; gap: 10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Help
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+
+    <div class="topbar">
+      <div class="breadcrumb">
+        <button class="back-btn" aria-label="Back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span>VoiceAgents</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Tessa</span>
+      </div>
+      <div class="topbar-right">
+        <span class="credit-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Get 125$
+        </span>
+        <button class="icon-btn" aria-label="Phone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+        </button>
+        <div class="user-pill">
+          <div class="avatar-sm"></div>
+          <span class="user-credit">$5.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="card">
+        <div class="agent-header">
+          <div class="agent-id">
+            <div class="agent-avatar">AI</div>
+            <div class="agent-meta">
+              <div class="agent-name-row">
+                <span class="agent-name">Tessa</span>
+                <span class="badge badge-success"><span class="dot"></span>Active</span>
+                <span class="badge badge-pink"><span class="dot"></span>in 4 call workflows</span>
+                <a href="#" class="link-inline">Open Analytics
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+              <span class="agent-role">AI Receptionist</span>
+            </div>
+          </div>
+          <div class="agent-actions">
+            <div class="mode-toggle" role="tablist" aria-label="Configuration mode">
+              <button class="mode-btn active" data-mode="form" type="button">Form</button>
+              <button class="mode-btn" data-mode="expert" type="button">{ } Expert</button>
+            </div>
+            <button class="btn btn-primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.18 4.18 2 2 0 0 1 4.18 2h3a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11L8.09 10.19a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.99.35 2 .59 3.06.72a2 2 0 0 1 1.72 2.04z"/></svg>
+              Test VoiceAgent
+            </button>
+            <button class="btn btn-danger" aria-label="Delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-form">
+
+      <div class="card">
+        <div class="card-header"><h2>Personality</h2></div>
+        <div class="card-body">
+          <div class="field">
+            <label class="field-label">Name</label>
+            <input class="input" type="text" value="Tessa" />
+          </div>
+          <div class="field">
+            <label class="field-label">Language</label>
+            <div class="chips-input">
+              <span class="chip"><span class="flag gb"></span>English (British)<button class="x" aria-label="Remove">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button></span>
+              <span class="chip"><span class="flag es"></span>Spanish (Spain)<button class="x" aria-label="Remove">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Voice</label>
+            <div class="chips-input with-caret">
+              <span class="chip"><span class="flag gb"></span>English (British)<button class="x" aria-label="Remove">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button></span>
+              <span class="chip"><span class="flag es"></span>Spanish (Spain)<button class="x" aria-label="Remove">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button></span>
+              <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Greeting</label>
+            <input class="input" type="text" value="Thanks for calling [Company Name] - how can I help today?" style="color: var(--brand-500);" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Knowledge sources</h2>
+          <div class="btn-split">
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add files
+            </button>
+            <button class="btn btn-sm" aria-label="More">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="info-banner">
+            <div class="left">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Manage all sources in one place
+            </div>
+            <a href="#" class="link-inline">Open Knowledge Base
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <div class="meta-row">6 documents uploaded — used by this agent to answer questions</div>
+
+          <div class="file-row">
+            <div class="file-info">
+              <div class="file-icon">PDF</div>
+              <div class="file-meta">
+                <span class="file-name">Tech design requirements.pdf</span>
+                <div class="file-detail">
+                  <span>200 KB</span>
+                  <span class="complete">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Complete
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>
+              Unlink from Agent
+            </button>
+          </div>
+
+          <div class="file-row">
+            <div class="file-info">
+              <div class="file-icon">PDF</div>
+              <div class="file-meta">
+                <span class="file-name">Tech design requirements.pdf</span>
+                <div class="file-detail">
+                  <span>200 KB</span>
+                  <span class="complete">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Complete
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>
+              Unlink from Agent
+            </button>
+          </div>
+
+          <div class="file-row">
+            <div class="file-info">
+              <div class="file-icon">PDF</div>
+              <div class="file-meta">
+                <span class="file-name">Tech design requirements.pdf</span>
+                <div class="file-detail">
+                  <span>200 KB</span>
+                  <span class="complete">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Complete
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>
+              Unlink from Agent
+            </button>
+          </div>
+
+          <div class="file-row">
+            <div class="file-info">
+              <div class="file-icon">PDF</div>
+              <div class="file-meta">
+                <span class="file-name">Tech design requirements.pdf</span>
+                <div class="file-detail">
+                  <span>200 KB</span>
+                  <span class="complete">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Complete
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>
+              Unlink from Agent
+            </button>
+          </div>
+
+          <div class="file-row">
+            <div class="file-info">
+              <div class="file-icon">PDF</div>
+              <div class="file-meta">
+                <span class="file-name">Tech design requirements.pdf</span>
+                <div class="file-detail">
+                  <span>200 KB</span>
+                  <span class="complete">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Complete
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>
+              Unlink from Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Skills</h2></div>
+        <div class="card-body">
+          <div class="skill-row">
+            <div class="skill-info">
+              <div class="skill-title-row">
+                <span class="skill-title">Take a message</span>
+                <span class="badge badge-added">Added</span>
+              </div>
+              <span class="skill-desc">Allows the caller to leave a message</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </button>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-info">
+              <div class="skill-title-row">
+                <span class="skill-title">Extract Data</span>
+                <span class="badge badge-added">Added</span>
+              </div>
+              <span class="skill-desc">Pull data from the conversation</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </button>
+              <button class="btn btn-sm btn-icon" aria-label="Delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-info">
+              <div class="skill-title-row"><span class="skill-title">Answer Questions</span></div>
+              <span class="skill-desc">Based on attached knowledge base</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-info">
+              <div class="skill-title-row"><span class="skill-title">Transfer to Human</span></div>
+              <span class="skill-desc">Route caller to the right person at the right time</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-info">
+              <div class="skill-title-row"><span class="skill-title">Custom</span></div>
+              <span class="skill-desc">Configure your own skill</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Scenarios</h2>
+          <button class="btn btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add scenario
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="scenarios-grid">
+            <div class="scenario-card">
+              <div class="scenario-head">
+                <span class="badge badge-template"><span class="dot"></span>Template</span>
+                <div class="scenario-actions">
+                  <button aria-label="Delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  </button>
+                  <button aria-label="Edit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">When</span>
+                <span class="scenario-val">Caller asks for booking link</span>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">Reply</span>
+                <span class="scenario-val"><em>"Let me send that to you via SMS."</em></span>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">Action</span>
+                <span class="scenario-val">Send SMS</span>
+              </div>
+            </div>
+
+            <div class="scenario-card">
+              <div class="scenario-head">
+                <span class="badge badge-template"><span class="dot"></span>Template</span>
+                <div class="scenario-actions">
+                  <button aria-label="Delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  </button>
+                  <button aria-label="Edit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">When</span>
+                <span class="scenario-val">Caller asks for booking link</span>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">Reply</span>
+                <span class="scenario-val"><em>"Let me send that to you via SMS."</em></span>
+              </div>
+              <div class="scenario-line">
+                <span class="scenario-key">Action</span>
+                <span class="scenario-val">Send SMS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div id="view-expert" hidden>
+
+        <div id="claude-card" class="claude-card" hidden>
+          <div class="head">
+            <span class="label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>
+              Claude
+              <span class="meta" style="margin-left: 4px;">suggested 4 edits · just now</span>
+            </span>
+            <button id="claude-close" class="btn btn-sm btn-icon" aria-label="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <p class="msg">"Made Tessa warmer in tone, parameterised the greeting with <code>${company.name}</code> so this template works across accounts, and added a booking-link scenario that sends an SMS via your existing template."</p>
+          <div class="actions">
+            <button id="claude-reject" class="btn btn-sm">Reject</button>
+            <button id="claude-apply" class="btn btn-sm btn-save-primary">Apply patch</button>
+          </div>
+        </div>
+
+        <div class="expert-card">
+          <div class="expert-header">
+            <div>
+              <h2>Configuration</h2>
+              <div class="sub">JSON schema (voiceagent@1.4) that defines this agent's behavior. <a href="#">Schema docs</a></div>
+            </div>
+            <div class="expert-header-actions">
+              <button class="btn btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+              <button class="btn btn-sm">Paste from Claude</button>
+              <button id="claude-toggle" class="btn btn-sm" style="background: var(--brand-25); border-color: var(--brand-100); color: var(--brand-500);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>
+                Edit with Claude
+              </button>
+            </div>
+          </div>
+
+          <div class="expert-tabs">
+            <button class="expert-tab active" data-tab="config" type="button">Config</button>
+            <button class="expert-tab" data-tab="prompt" type="button">Compiled prompt</button>
+            <button class="expert-tab" data-tab="diff" type="button">Diff <span class="count">3</span></button>
+          </div>
+
+          <div id="tab-config" class="tab-pane">
+            <div class="warn-strip">
+              <span class="icon-dot">!</span>
+              <span>Line 16 · <code>"speed": 1.4</code> is near the upper bound. Some accents may sound rushed at this pace — consider <code>1.1</code>–<code>1.2</code> for clarity.</span>
+            </div>
+            <div class="json-editor-wrap">
+<div class="json-editor">{
+  <span class="key">"$schema"</span><span class="punc">:</span> <span class="str">"voiceagent@1.4"</span><span class="punc">,</span>
+  <span class="key">"identity"</span><span class="punc">:</span> {
+    <span class="key">"name"</span><span class="punc">:</span> <span class="str">"Tessa"</span><span class="punc">,</span>
+    <span class="key">"role"</span><span class="punc">:</span> <span class="str">"AI Receptionist"</span><span class="punc">,</span>
+    <span class="key">"languages"</span><span class="punc">:</span> [<span class="str">"en-GB"</span><span class="punc">,</span> <span class="str">"es-ES"</span>]
+  }<span class="punc">,</span>
+  <span class="key">"voice"</span><span class="punc">:</span> {
+    <span class="key">"provider"</span><span class="punc">:</span> <span class="str">"elevenlabs"</span><span class="punc">,</span>
+    <span class="key">"voiceIds"</span><span class="punc">:</span> {
+      <span class="key">"en-GB"</span><span class="punc">:</span> <span class="str">"amelia_v2"</span><span class="punc">,</span>
+      <span class="key">"es-ES"</span><span class="punc">:</span> <span class="str">"lucia"</span>
+    }<span class="punc">,</span>
+    <span class="key">"speed"</span><span class="punc">:</span> <span class="num warn">1.4</span><span class="punc">,</span>
+    <span class="key">"interruptible"</span><span class="punc">:</span> <span class="bool">true</span>
+  }<span class="punc">,</span>
+  <span class="key">"behavior"</span><span class="punc">:</span> {
+    <span class="key">"model"</span><span class="punc">:</span> <span class="str">"claude-sonnet-4-6"</span><span class="punc">,</span>
+    <span class="key">"tone"</span><span class="punc">:</span> <span class="str">"warm"</span><span class="punc">,</span>
+    <span class="key">"greeting"</span><span class="punc">:</span> <span class="str">"Thanks for calling <span class="tpl">${company.name}</span> — how can I help today?"</span><span class="punc">,</span>
+    <span class="key">"maxTurnSec"</span><span class="punc">:</span> <span class="num">30</span>
+  }<span class="punc">,</span>
+  <span class="key">"knowledge"</span><span class="punc">:</span> {
+    <span class="key">"sources"</span><span class="punc">:</span> [
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a1"</span> }<span class="punc">,</span>
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a2"</span> }<span class="punc">,</span>
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a3"</span> }<span class="punc">,</span>
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a4"</span> }<span class="punc">,</span>
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a5"</span> }<span class="punc">,</span>
+      { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"pdf"</span><span class="punc">,</span> <span class="key">"id"</span><span class="punc">:</span> <span class="str">"doc_a6"</span> }
+    ]
+  }<span class="punc">,</span>
+  <span class="key">"skills"</span><span class="punc">:</span> [
+    { <span class="key">"name"</span><span class="punc">:</span> <span class="str">"take_message"</span><span class="punc">,</span> <span class="key">"type"</span><span class="punc">:</span> <span class="str">"message"</span> }<span class="punc">,</span>
+    { <span class="key">"name"</span><span class="punc">:</span> <span class="str">"extract_data"</span><span class="punc">,</span> <span class="key">"type"</span><span class="punc">:</span> <span class="str">"extract"</span><span class="punc">,</span> <span class="key">"fields"</span><span class="punc">:</span> [<span class="str">"customer_name"</span><span class="punc">,</span> <span class="str">"phone"</span>] }
+  ]<span class="punc">,</span>
+  <span class="key">"scenarios"</span><span class="punc">:</span> [
+    {
+      <span class="key">"trigger"</span><span class="punc">:</span> <span class="str">"caller asks for booking link"</span><span class="punc">,</span>
+      <span class="key">"reply"</span><span class="punc">:</span> <span class="str">"Let me send that to you via SMS."</span><span class="punc">,</span>
+      <span class="key">"action"</span><span class="punc">:</span> { <span class="key">"type"</span><span class="punc">:</span> <span class="str">"send_sms"</span><span class="punc">,</span> <span class="key">"template"</span><span class="punc">:</span> <span class="str">"<span class="tpl">${booking.smsTemplate}</span>"</span> }
+    }
+  ]
+}</div>
+            </div>
+            <div class="examples-row">
+              <span class="examples-label">Start from:</span>
+              <button class="example-pill" type="button">Sales receptionist</button>
+              <button class="example-pill" type="button">Support triage</button>
+              <button class="example-pill" type="button">After-hours</button>
+              <button class="example-pill" type="button">Booking assistant</button>
+              <button class="example-pill" type="button">Blank</button>
+            </div>
+            <button class="format-btn" type="button">Format JSON</button>
+          </div>
+
+          <div id="tab-prompt" class="tab-pane" hidden>
+            <div style="padding: 16px 20px 0;">
+              <div class="compiled-tag">Read-only · Generated from config</div>
+            </div>
+            <div class="compiled-prompt">You are Tessa, an AI Receptionist for <span class="var">${company.name}</span>.
+
+Languages: English (British), Spanish (Spain) — match the caller's language.
+Voice: Amelia v2 / Lucia (ElevenLabs) at 1.4× speed, interruptible.
+
+Greeting (say once on connect):
+"Thanks for calling <span class="var">${company.name}</span> — how can I help today?"
+
+Knowledge:
+You have access to 6 reference documents. Cite them when answering questions.
+
+Capabilities:
+• take_message — record a callback request when the caller wants to leave one.
+• extract_data — capture customer_name and phone during the conversation.
+
+Scenarios:
+• When the caller asks for a booking link:
+  Reply: "Let me send that to you via SMS."
+  Action: send_sms with template <span class="var">${booking.smsTemplate}</span>
+
+Constraints:
+• Keep each response under 30 seconds of speech.
+• Yield immediately if the caller interrupts.
+• Never disclose model name or internal config.</div>
+          </div>
+
+          <div id="tab-diff" class="tab-pane" hidden>
+            <div class="diff-meta">3 changes vs saved version (v12 · 2 days ago)</div>
+            <div class="diff-list">
+              <div class="removed">−  "behavior.greeting": "Thanks for calling — how can I help today?"</div>
+              <div class="added">+  "behavior.greeting": "Thanks for calling ${company.name} — how can I help today?"</div>
+              <div class="removed">−  "voice.speed": 1.0</div>
+              <div class="added">+  "voice.speed": 1.4</div>
+              <div class="added">+  scenarios[0]: trigger "caller asks for booking link"</div>
+            </div>
+          </div>
+
+          <div class="expert-footer">
+            <div class="status">
+              <span class="sdot"></span>
+              <span>1 warning · 3 changes pending</span>
+            </div>
+            <div class="actions">
+              <button class="btn btn-sm">Discard</button>
+              <button class="btn btn-sm">Test call</button>
+              <button class="btn btn-sm btn-save-primary">Save</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const formView = document.getElementById('view-form');
+  const expertView = document.getElementById('view-expert');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      modeBtns.forEach(b => b.classList.toggle('active', b === btn));
+      formView.hidden = (mode === 'expert');
+      expertView.hidden = (mode === 'form');
+    });
+  });
+
+  const expertTabs = document.querySelectorAll('.expert-tab');
+  expertTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      expertTabs.forEach(t => t.classList.toggle('active', t === tab));
+      ['config', 'prompt', 'diff'].forEach(id => {
+        document.getElementById('tab-' + id).hidden = (id !== target);
+      });
+    });
+  });
+
+  const claudeCard = document.getElementById('claude-card');
+  const claudeToggle = document.getElementById('claude-toggle');
+  const claudeClose = document.getElementById('claude-close');
+  const claudeReject = document.getElementById('claude-reject');
+  const claudeApply = document.getElementById('claude-apply');
+  if (claudeToggle) claudeToggle.addEventListener('click', () => { claudeCard.hidden = !claudeCard.hidden; });
+  if (claudeClose) claudeClose.addEventListener('click', () => { claudeCard.hidden = true; });
+  if (claudeReject) claudeReject.addEventListener('click', () => { claudeCard.hidden = true; });
+  if (claudeApply) claudeApply.addEventListener('click', () => {
+    claudeCard.hidden = true;
+    expertTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === 'diff'));
+    ['config', 'prompt', 'diff'].forEach(id => {
+      document.getElementById('tab-' + id).hidden = (id !== 'diff');
+    });
+  });
+})();
+</script>
+</body>
+</html>
