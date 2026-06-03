@@ -214,8 +214,6 @@ textarea{resize:vertical;line-height:1.55;min-height:76px}
 .tr-confidence{font-size:11px;color:var(--gc-400);padding:0 12px 10px;display:flex;align-items:center;gap:6px}
 .tr-confidence .bar{flex:1;height:3px;background:var(--gc-100);border-radius:2px;overflow:hidden}
 .tr-confidence .bar-fill{height:100%;background:var(--ok-500);border-radius:2px}
-.test-no-call{text-align:center;padding:28px 16px;color:var(--gc-400)}
-.test-no-call p{font-size:12px;margin-top:8px;line-height:1.5}
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--gc-200);border-radius:3px}
@@ -493,10 +491,6 @@ textarea{resize:vertical;line-height:1.55;min-height:76px}
           </button>
         </div>
         <div id="testResult"></div>
-        <div class="test-no-call" id="testNoCall">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="var(--gc-200)" stroke-width="1.5"/><path d="M10 16h12M16 10v12" stroke="var(--gc-300)" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <p>Select a call and click Run to preview extraction against a real transcript.</p>
-        </div>
       </div>
 
       <div class="modal-right"></div>
@@ -585,7 +579,6 @@ function openPanel(id) {
   $('fieldInstr').value = p ? p.instr : '';
   $('testCallSelect').value = '';
   $('testResult').innerHTML = '';
-  $('testNoCall').style.display = 'block';
   $('previewBtn').disabled = true;
   $('overlay').classList.add('open');
   panelOpen = true;
@@ -623,7 +616,6 @@ function deleteProp(id) {
 function onCallSelect() {
   $('previewBtn').disabled = !$('testCallSelect').value;
   $('testResult').innerHTML = '';
-  $('testNoCall').style.display = $('testCallSelect').value ? 'none' : 'block';
 }
 
 const MOCK_RESULTS = {
