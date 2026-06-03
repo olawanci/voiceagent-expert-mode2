@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Tessa · VoiceAgent | CloudTalk</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design tokens ── */
+:root {
+  --brand-25:#f1f3ff; --brand-50:#dde2ff; --brand-100:#b1bcff;
+  --brand-400:#304cff; --brand-500:#0527ff; --brand-600:#0420d5; --brand-700:#031aaa;
+  --gc-25:#fcfcfd; --gc-50:#f9f9fb; --gc-100:#eff1f5; --gc-200:#dcdfea;
+  --gc-300:#b9c0d4; --gc-400:#7d89b0; --gc-500:#5d6b98; --gc-600:#4a5578;
+  --gc-700:#404968; --gc-800:#30374f; --gc-900:#111322;
+  --ok-50:#ecfdf3; --ok-100:#dcfae6; --ok-500:#17b26a; --ok-600:#079455;
+  --err-50:#fef3f2; --err-500:#f04438;
+  --warn-50:#fffaeb; --warn-500:#eaaa08;
+  --teal-50:#f0fdf9; --teal-100:#ccfbef; --teal-500:#15b79e; --teal-600:#0e9384;
+  --spark-100:#f3ffde; --spark-500:#b9f94d; --spark-600:#a4f41b; --spark-700:#91da15;
+  --line:#edeff5; --border:#d5d7da; --white:#fff;
+  --r:8px; --r-xl:12px;
+  --shadow:0 1px 3px rgba(24,34,67,.05),0 1px 2px rgba(24,34,67,.03);
+  --shadow-lg:0 16px 40px rgba(17,19,34,.12);
+  --shadow-card:0 1px 7px rgba(24,34,67,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--gc-100);color:var(--gc-800);height:100vh;display:flex;overflow:hidden;-webkit-font-smoothing:antialiased}
+@keyframes riseIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+
+/* ── Sidebar ── */
+.sidebar{width:220px;background:var(--white);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;padding:14px 0}
+.sb-logo{display:flex;align-items:center;gap:9px;padding:0 16px 16px}
+.sb-mark{width:28px;height:28px;border-radius:7px;background:var(--brand-500);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-wm{font-size:16px;font-weight:700;color:var(--gc-900);letter-spacing:-.3px}
+.sb-nav{flex:1;overflow-y:auto;padding:0 8px}
+.sb-sec{font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--gc-400);text-transform:uppercase;padding:12px 8px 4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:6px;color:var(--gc-600);font-size:13px;font-weight:500;cursor:pointer;transition:all .12s;margin-bottom:1px}
+.sb-item:hover{background:var(--gc-50);color:var(--gc-800)}
+.sb-item.active{background:var(--brand-25);color:var(--brand-600)}
+.sb-item svg{width:16px;height:16px;flex-shrink:0}
+.sb-foot{padding:6px 8px 0;border-top:1px solid var(--line);margin-top:6px}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{height:52px;background:var(--white);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.crumb{font-size:13px;color:var(--gc-400);display:flex;align-items:center;gap:6px}
+.crumb a{color:var(--gc-400);text-decoration:none}.crumb a:hover{color:var(--gc-700)}
+.crumb .cur{color:var(--gc-900);font-weight:500}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--brand-100);color:var(--brand-700);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+/* ── Agent header ── */
+.agent-header{background:var(--white);border-bottom:1px solid var(--line);padding:16px 24px 0;flex-shrink:0}
+.ah-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ah-left{display:flex;align-items:center;gap:12px}
+.ah-av{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--brand-400),var(--brand-700));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;box-shadow:0 3px 10px rgba(5,39,255,.22)}
+.ah-name{font-size:18px;font-weight:600;color:var(--gc-900)}
+.ah-sub{font-size:12px;color:var(--gc-400);margin-top:2px}
+.ah-badges{display:flex;align-items:center;gap:6px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.badge-active{background:var(--ok-50);color:var(--ok-600)}
+.badge-active .dot{width:6px;height:6px;border-radius:50%;background:var(--ok-500)}
+.badge-workflows{background:var(--gc-100);color:var(--gc-500)}
+.badge-analytics{background:none;color:var(--brand-500);padding:3px 0;font-weight:500;cursor:pointer;font-size:11.5px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.badge-analytics:hover{color:var(--brand-700)}
+.ah-right{display:flex;align-items:center;gap:8px}
+.btn{font-family:inherit;font-size:13px;font-weight:500;border-radius:var(--r);cursor:pointer;transition:all .14s;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;padding:8px 14px}
+.btn-primary{background:var(--brand-500);color:#fff}
+.btn-primary:hover{background:var(--brand-600)}
+.btn-danger-icon{background:none;border:1px solid var(--err-500);color:var(--err-500);padding:7px 9px}
+.btn-danger-icon:hover{background:var(--err-50)}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--gc-600)}
+.btn-ghost:hover{background:var(--gc-50)}
+.btn-sm{font-size:12px;padding:6px 11px}
+
+/* ── Tab nav ── */
+.tab-nav{display:flex;gap:0;margin-top:4px}
+.tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--gc-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;user-select:none}
+.tab:hover{color:var(--gc-800)}
+.tab.active{color:var(--brand-500);border-bottom-color:var(--brand-500)}
+.tab .tab-badge{font-size:10.5px;font-weight:600;background:var(--brand-50);color:var(--brand-600);padding:1px 6px;border-radius:20px}
+
+/* ── Content area ── */
+.content{flex:1;overflow-y:auto;padding:24px}
+.tab-panel{display:none;animation:riseIn .3s ease both}
+.tab-panel.active{display:block}
+
+/* ── Skills tab ── */
+.section{background:var(--white);border:1px solid var(--line);border-radius:var(--r-xl);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow-card)}
+.section-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:13.5px;font-weight:600;color:var(--gc-800);display:flex;align-items:center;gap:7px}
+.section-title svg{color:var(--gc-400)}
+.skill-row{display:flex;align-items:flex-start;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--line);gap:12px}
+.skill-row:last-child{border:none}
+.skill-info{flex:1;min-width:0}
+.skill-name{font-size:13px;font-weight:600;color:var(--gc-900);display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.skill-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:4px;background:var(--ok-50);color:var(--ok-600)}
+.skill-desc{font-size:12px;color:var(--gc-500);line-height:1.5}
+.skill-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.icon-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gc-400);transition:all .12s}
+.icon-btn:hover{background:var(--gc-50);color:var(--gc-700)}
+.icon-btn.danger:hover{background:var(--err-50);color:var(--err-500);border-color:var(--err-500)}
+.add-skill-row{padding:12px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--gc-400);font-size:13px;transition:all .12s}
+.add-skill-row:hover{background:var(--gc-50);color:var(--gc-700)}
+.add-skill-row svg{color:var(--brand-500)}
+
+/* ── Analysis tab ── */
+.analysis-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.analysis-title-block{flex:1}
+.analysis-title{font-size:16px;font-weight:600;color:var(--gc-900);margin-bottom:4px}
+.analysis-sub{font-size:13px;color:var(--gc-500);line-height:1.5;max-width:560px}
+.info-banner{background:var(--brand-25);border:1px solid var(--brand-100);border-radius:var(--r);padding:11px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+.info-banner svg{color:var(--brand-500);flex-shrink:0;margin-top:1px}
+.info-banner p{font-size:12.5px;color:var(--gc-700);line-height:1.5}
+.info-banner p b{color:var(--gc-900)}
+
+/* property list */
+.prop-list{background:var(--white);border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-card)}
+.prop-list-head{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.prop-list-label{font-size:12.5px;font-weight:600;color:var(--gc-500);text-transform:uppercase;letter-spacing:.4px}
+.prop-row{display:flex;align-items:flex-start;padding:14px 16px;border-bottom:1px solid var(--line);gap:10px;transition:background .12s}
+.prop-row:last-child{border:none}
+.prop-row:hover{background:var(--gc-50)}
+.prop-dot{width:8px;height:8px;border-radius:50%;background:var(--teal-500);flex-shrink:0;margin-top:5px}
+.prop-body{flex:1;min-width:0}
+.prop-name-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.prop-name{font-size:13.5px;font-weight:600;color:var(--gc-900)}
+.prop-type{font-size:11px;font-weight:500;padding:2px 7px;border-radius:5px;background:var(--gc-100);color:var(--gc-600)}
+.prop-instr{font-size:12px;color:var(--gc-500);line-height:1.5;max-width:600px;
+  overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.prop-actions{display:flex;gap:6px;flex-shrink:0;padding-top:1px}
+.prop-empty{padding:40px 16px;text-align:center;color:var(--gc-400)}
+.prop-empty .pe-icon{width:44px;height:44px;border-radius:12px;background:var(--gc-50);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:var(--gc-300)}
+.prop-empty p{font-size:12.5px;max-width:220px;margin:0 auto;line-height:1.55}
+
+/* webhook block */
+.webhook-block{background:var(--white);border:1px solid var(--line);border-radius:var(--r-xl);padding:16px;box-shadow:var(--shadow-card);margin-top:16px}
+.wb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.wb-title{font-size:13.5px;font-weight:600;color:var(--gc-900);display:flex;align-items:center;gap:7px}
+.wb-title svg{color:var(--gc-400)}
+.wb-rec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;padding:2px 7px;border-radius:4px;background:var(--teal-100);color:var(--teal-600)}
+.wb-desc{font-size:12px;color:var(--gc-500);line-height:1.5;margin-bottom:12px}
+.wb-desc a{color:var(--brand-500);text-decoration:none}.wb-desc a:hover{text-decoration:underline}
+.toggle{width:40px;height:22px;border-radius:11px;background:var(--brand-500);border:none;cursor:pointer;position:relative;flex-shrink:0;transition:background .15s}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s;transform:translateX(18px)}
+.toggle.off{background:var(--gc-200)}
+.toggle.off::after{transform:translateX(0)}
+.wb-url-wrap{display:flex;align-items:center;gap:8px}
+.wb-url{flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:12.5px;color:var(--gc-700);font-family:inherit;background:var(--gc-50);outline:none}
+.wb-url:focus{border-color:var(--brand-400);background:var(--white);box-shadow:0 0 0 3px rgba(5,39,255,.06)}
+
+/* ── Modal overlay ── */
+.overlay{position:fixed;inset:0;background:rgba(17,19,34,.45);backdrop-filter:blur(2px);z-index:200;display:none;animation:fadeIn .18s ease;align-items:center;justify-content:center;padding:24px}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:560px;max-height:calc(100vh - 48px);display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:popIn .25s cubic-bezier(.2,.9,.3,1.05) both;overflow:hidden}
+@keyframes popIn{0%{opacity:0;transform:scale(.97) translateY(8px)}100%{opacity:1;transform:none}}
+.sp-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sp-title{font-size:15px;font-weight:600;color:var(--gc-900)}
+.sp-close{width:30px;height:30px;border-radius:6px;border:none;background:none;color:var(--gc-400);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.sp-close:hover{background:var(--gc-100);color:var(--gc-700)}
+.modal-body{display:flex;flex:1;overflow:hidden;min-height:0}
+.modal-left{flex:1;padding:22px;overflow-y:auto}
+.modal-right{display:none}
+.sp-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+
+/* ── Form elements ── */
+.form-group{margin-bottom:16px}
+.form-row{display:flex;gap:12px;margin-bottom:16px}
+.form-row .form-group{flex:1;margin-bottom:0}
+label{display:block;font-size:12px;font-weight:600;color:var(--gc-700);margin-bottom:5px}
+label .req{color:var(--err-500)}
+input[type=text],textarea,select{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;color:var(--gc-900);font-family:inherit;outline:none;background:var(--white);transition:border-color .12s,box-shadow .12s}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--brand-400);box-shadow:0 0 0 3px rgba(5,39,255,.06)}
+textarea{resize:vertical;line-height:1.55;min-height:76px}
+.hint{font-size:11.5px;color:var(--gc-400);margin-top:4px;line-height:1.5}
+.form-divider{height:1px;background:var(--line);margin:20px 0}
+.form-section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--gc-400);margin-bottom:12px}
+
+/* example value row */
+.example-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.example-tag{font-size:11.5px;font-weight:500;padding:3px 8px;border-radius:5px;background:var(--teal-50);color:var(--teal-600);white-space:nowrap}
+
+/* where this runs */
+.runs-block{background:var(--gc-50);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.runs-row{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--gc-700)}
+.runs-row+.runs-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.runs-label{font-weight:500}
+.runs-sub{font-size:11.5px;color:var(--gc-400);margin-top:1px}
+.toggle-sm{width:34px;height:19px;border-radius:10px;background:var(--brand-500);border:none;cursor:pointer;position:relative;flex-shrink:0;transition:background .15s}
+.toggle-sm::after{content:'';position:absolute;top:2.5px;left:2.5px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .15s;transform:translateX(15px)}
+.toggle-sm.off{background:var(--gc-200)}
+.toggle-sm.off::after{transform:translateX(0)}
+
+/* ── Test panel (right column) ── */
+.test-col-label{font-size:12px;font-weight:600;color:var(--gc-700);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.test-col-sub{font-size:12px;color:var(--gc-500);line-height:1.5;margin-bottom:16px}
+.test-select-row{display:flex;gap:8px;margin-bottom:16px}
+.test-select-row select{flex:1;font-size:12.5px}
+.btn-preview{background:var(--teal-500);color:#fff;border-color:transparent;white-space:nowrap}
+.btn-preview:hover{background:var(--teal-600)}
+.btn-preview:disabled{background:var(--gc-200);color:var(--gc-400);cursor:not-allowed}
+.test-result{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--white);animation:riseIn .3s ease both}
+.tr-loading{display:flex;align-items:center;gap:8px;color:var(--gc-500);font-size:12.5px;padding:14px}
+.orb{width:13px;height:13px;border-radius:50%;background:conic-gradient(from 0deg,var(--brand-500),var(--brand-200),var(--brand-500));animation:spin .9s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tr-field-head{padding:8px 12px;background:var(--gc-50);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.tr-field-name{font-size:12px;font-weight:600;color:var(--gc-800)}
+.tr-field-type{font-size:11px;color:var(--gc-400);background:var(--gc-100);padding:1px 6px;border-radius:4px}
+.tr-field-val{padding:10px 12px;font-size:13px;color:var(--gc-900);line-height:1.5;font-weight:500}
+.tr-confidence{font-size:11px;color:var(--gc-400);padding:0 12px 10px;display:flex;align-items:center;gap:6px}
+.tr-confidence .bar{flex:1;height:3px;background:var(--gc-100);border-radius:2px;overflow:hidden}
+.tr-confidence .bar-fill{height:100%;background:var(--ok-500);border-radius:2px}
+.test-no-call{text-align:center;padding:28px 16px;color:var(--gc-400)}
+.test-no-call p{font-size:12px;margin-top:8px;line-height:1.5}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--gc-200);border-radius:3px}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--gc-900);color:#fff;font-size:12.5px;padding:9px 16px;border-radius:10px;opacity:0;transition:all .22s;z-index:400;display:flex;align-items:center;gap:8px;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast svg{color:var(--spark-500)}
+
+/* ── Prototype label ── */
+.proto{position:fixed;bottom:14px;right:20px;background:var(--gc-900);color:#fff;padding:6px 13px;border-radius:16px;font-size:11.5px;font-weight:500;z-index:300;box-shadow:var(--shadow-lg)}
+.proto strong{color:var(--brand-200)}
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <span class="sb-mark"><svg width="18" height="18" viewBox="0 0 36 36" fill="none"><path d="M11 18a7 7 0 1 1 14 0 7 7 0 0 1-14 0zm7-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="#fff"/><circle cx="28" cy="8" r="3" fill="#99f6e0"/></svg></span>
+    <span class="sb-wm">cloudtalk</span>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><rect x="1.5" y="1.5" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="10.5" y="1.5" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="1.5" y="10.5" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="10.5" y="10.5" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 5v4l2.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Call Monitor</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><path d="M3 15V8M9 15V3M15 15v-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Analytics</div>
+    <div class="sb-sec">Company</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="2.6" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 15c0-2.7 2.5-4.3 5.5-4.3s5.5 1.6 5.5 4.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Users</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><circle cx="6" cy="6.5" r="2.2" stroke="currentColor" stroke-width="1.5"/><circle cx="12.5" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 14.5c0-2.2 1.7-3.4 3.5-3.4s3.5 1.2 3.5 3.4M11 11.3c1.6 0 3.5.9 3.5 3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Groups</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><rect x="2.5" y="3" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 7h13" stroke="currentColor" stroke-width="1.5"/></svg>Contacts</div>
+    <div class="sb-sec">Operations</div>
+    <div class="sb-item active"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 8a1 1 0 112 0M9.5 8a1 1 0 112 0M7 11s.5 1.5 2 1.5 2-1.5 2-1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>VoiceAgents</div>
+    <div class="sb-sec">Settings</div>
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M9 1.5v2M9 14.5v2M16.5 9h-2M3.5 9h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Account</div>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-item"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 7a2 2 0 113 1.7c-.6.4-1 .7-1 1.3M9 12.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Help</div>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+  <div class="topbar">
+    <div class="crumb">
+      <a href="#">VoiceAgents</a>
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span class="cur">Tessa</span>
+    </div>
+    <div class="topbar-right">
+      <div class="avatar">AW</div>
+    </div>
+  </div>
+
+  <!-- Agent header + tabs -->
+  <div class="agent-header">
+    <div class="ah-top">
+      <div class="ah-left">
+        <div class="ah-av">Te</div>
+        <div>
+          <div class="ah-name">Tessa
+            <span style="margin-left:6px" class="badge badge-active"><span class="dot"></span>Active</span>
+          </div>
+          <div class="ah-sub">AI Receptionist</div>
+        </div>
+        <div class="ah-badges">
+          <span class="badge badge-workflows">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4 1.5 1.5 4 1.5 7S4 12.5 7 12.5 12.5 10 12.5 7 10 1.5 7 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.5v2.8l1.8 1.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            3 workflows
+          </span>
+          <a href="#" class="badge badge-analytics" onclick="toast('Analytics — prototype',false);return false">
+            Open Analytics
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5l7-7M9.5 2.5H5M9.5 2.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="ah-right">
+        <button class="btn btn-primary btn-sm" onclick="toast('Opening test call… (prototype)')">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M4 2l1.4.3.5 1.9-.8.8a6 6 0 003 3l.8-.8 1.8.5.3 1.4c-.1.7-.8 1.1-1.5 1A8.5 8.5 0 013 4.5C2.9 3.8 3.3 3.1 4 3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          Test VoiceAgent
+        </button>
+        <button class="btn btn-danger-icon btn-sm" title="Delete agent" onclick="toast('Delete agent — confirmation would appear (prototype)',false)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 6v4M8.5 6v4M3 3.5l.7 8a1 1 0 001 .9h4.6a1 1 0 001-.9l.7-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="tab-nav">
+      <div class="tab" onclick="switchTab('personality')">Personality</div>
+      <div class="tab" onclick="switchTab('knowledge')">Knowledge</div>
+      <div class="tab" onclick="switchTab('skills')">Skills</div>
+      <div class="tab active" id="tab-analysis" onclick="switchTab('analysis')">
+        Analysis
+        <span class="tab-badge">2</span>
+      </div>
+      <div class="tab" onclick="switchTab('scenarios')">Scenarios</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content" id="mainContent">
+
+    <!-- Personality tab -->
+    <div class="tab-panel" id="panel-personality">
+      <div class="section">
+        <div class="section-head"><span class="section-title">Personality</span><button class="btn btn-ghost btn-sm">Edit</button></div>
+        <div style="padding:14px 16px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;font-weight:600;color:var(--gc-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Name</div><div style="font-size:13.5px;color:var(--gc-900);font-weight:500">Tessa</div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--gc-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Type</div><div style="font-size:13.5px;color:var(--gc-900);font-weight:500">AI Receptionist</div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--gc-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Language</div><div style="display:flex;gap:6px;margin-top:2px"><span class="badge" style="background:var(--brand-25);color:var(--brand-600)">🇬🇧 English</span><span class="badge" style="background:var(--brand-25);color:var(--brand-600)">🇪🇸 Spanish</span></div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--gc-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Voice</div><div style="font-size:13.5px;color:var(--gc-900);font-weight:500">Tessa · warm, neutral</div></div>
+          </div>
+          <div style="margin-top:14px;background:var(--gc-50);border:1px solid var(--line);border-radius:7px;padding:10px 12px;font-size:13px;color:var(--gc-600);line-height:1.5">"Thanks for calling [Company Name] — how can I help today?"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Knowledge tab -->
+    <div class="tab-panel" id="panel-knowledge">
+      <div class="section">
+        <div class="section-head"><span class="section-title">Knowledge sources</span><button class="btn btn-ghost btn-sm" onclick="toast('Add source — prototype',false)">+ Add source</button></div>
+        <div style="padding:14px 16px;font-size:13px;color:var(--gc-600)">6 documents · 23 Q&amp;A pairs indexed</div>
+      </div>
+    </div>
+
+    <!-- Skills tab -->
+    <div class="tab-panel" id="panel-skills">
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1l1.8 4.2L14 7l-4.2 1.8L8 13l-1.8-4.2L2 7l4.2-1.8L8 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            Skills
+          </span>
+        </div>
+        <div class="skill-row">
+          <div class="skill-info">
+            <div class="skill-name">Take a message <span class="skill-tag">Added</span></div>
+            <div class="skill-desc">Allows the caller to leave a message</div>
+          </div>
+          <div class="skill-actions">
+            <button class="icon-btn" title="Edit" onclick="toast('Edit Take a message — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+            <button class="icon-btn danger" title="Remove" onclick="toast('Remove skill — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 6v4M8.5 6v4M3 3.5l.7 8a1 1 0 001 .9h4.6a1 1 0 001-.9l.7-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-info">
+            <div class="skill-name">Answer Questions <span class="skill-tag">Added</span></div>
+            <div class="skill-desc">Based on attached knowledge base</div>
+          </div>
+          <div class="skill-actions">
+            <button class="icon-btn" title="Edit" onclick="toast('Edit Answer Questions — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+            <button class="icon-btn danger" title="Remove" onclick="toast('Remove skill — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 6v4M8.5 6v4M3 3.5l.7 8a1 1 0 001 .9h4.6a1 1 0 001-.9l.7-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-info">
+            <div class="skill-name">Transfer to Human <span class="skill-tag">Added</span></div>
+            <div class="skill-desc">Routes caller to the right person at the right time</div>
+          </div>
+          <div class="skill-actions">
+            <button class="icon-btn" title="Edit" onclick="toast('Edit Transfer to Human — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+            <button class="icon-btn danger" title="Remove" onclick="toast('Remove skill — prototype',false)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 6v4M8.5 6v4M3 3.5l.7 8a1 1 0 001 .9h4.6a1 1 0 001-.9l.7-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+        <div class="add-skill-row" onclick="toast('Add skill — prototype',false)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add skill
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis tab (active) -->
+    <div class="tab-panel active" id="panel-analysis">
+      <div class="analysis-header">
+        <div class="analysis-title-block">
+          <div class="analysis-title">Post-call analysis</div>
+          <div class="analysis-sub">Define what data to extract from each call transcript. Runs automatically after the call ends — not during the conversation.</div>
+        </div>
+        <button class="btn btn-primary btn-sm" style="margin-left:20px;flex-shrink:0" onclick="openPanel(null)">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Add property
+        </button>
+      </div>
+
+      <div class="info-banner">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7v4M8 5.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <p>Each property is extracted from the <b>call transcript</b> after the call. You can test any property against a real call before going live — no need to make a new call each time you tweak the instructions.</p>
+      </div>
+
+      <div class="prop-list" id="propList">
+        <div class="prop-list-head">
+          <span class="prop-list-label">Extracted properties</span>
+          <span style="font-size:12px;color:var(--gc-400)" id="propCount">2 properties</span>
+        </div>
+        <div id="propRows">
+          <!-- rows rendered by JS -->
+        </div>
+      </div>
+
+      <div class="webhook-block">
+        <div class="wb-top">
+          <span class="wb-title">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3a3 3 0 100 6 3 3 0 000-6zM13 10a3 3 0 100-6 3 3 0 000 6zM9 6l-3 4M10 9l3-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Send via Webhook
+            <span class="wb-rec">Recommended</span>
+          </span>
+          <button class="toggle" id="webhookToggle" onclick="toggleWebhook()"></button>
+        </div>
+        <p class="wb-desc">Extracted data is stored in CloudTalk and synced with your <a href="#" onclick="return false">active integrations</a>. Enable this to also send it to a custom endpoint via webhook.</p>
+        <div class="wb-url-wrap">
+          <input type="text" class="wb-url" id="webhookUrl" value="https://hook.eu2.make.com/ohgqpbsg8x825w7rsj1sn2479fp6e76g" placeholder="https://your-endpoint.com/webhook">
+        </div>
+      </div>
+    </div>
+
+    <!-- Scenarios tab -->
+    <div class="tab-panel" id="panel-scenarios">
+      <div class="section">
+        <div class="section-head"><span class="section-title">Scenarios</span><button class="btn btn-ghost btn-sm" onclick="toast('Add scenario — prototype',false)">+ Add scenario</button></div>
+        <div style="padding:14px 16px;font-size:13px;color:var(--gc-600)">2 scenarios configured</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ── Modal ── -->
+<div class="overlay" id="overlay" onclick="onOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="sp-head">
+      <span class="sp-title" id="spTitle">Add property</span>
+      <button class="sp-close" onclick="closePanel()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Left: schema form -->
+      <div class="modal-left">
+        <div class="form-group">
+          <label>Property name <span class="req">*</span></label>
+          <input type="text" id="fieldName" placeholder="e.g. call_outcome, budget, lead_score">
+          <div class="hint">Use snake_case — this becomes the key in your webhook payload and CRM field.</div>
+        </div>
+        <div class="form-group">
+          <label>Save as</label>
+          <select id="fieldType">
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="boolean">Boolean (Yes / No)</option>
+            <option value="date">Date</option>
+            <option value="enum">Single choice</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Instructions for the AI <span class="req">*</span></label>
+          <textarea id="fieldInstr" rows="5" placeholder="Describe exactly what to extract and when. Be specific — mention allowed values, edge cases, or priority rules."></textarea>
+          <div class="hint">The AI reads the full transcript and follows these instructions to produce the value.</div>
+        </div>
+        <div class="form-divider"></div>
+        <div class="test-col-label">Test with a call</div>
+        <div class="test-col-sub">Select a recent call to preview what the AI would extract. <b style="color:var(--gc-700)">Nothing is saved</b> — dry run only.</div>
+        <div class="test-select-row">
+          <select id="testCallSelect" onchange="onCallSelect()">
+            <option value="">Select a call…</option>
+            <option value="1">📞 +1 (555) 234-7890 · today, 14:23 · 3m 41s</option>
+            <option value="2">📞 +44 7700 900123 · today, 11:07 · 7m 12s</option>
+            <option value="3">📞 +34 612 345 678 · yesterday, 16:55 · 1m 58s</option>
+            <option value="4">📞 +1 (555) 876-4321 · yesterday, 09:30 · 5m 03s</option>
+          </select>
+          <button class="btn btn-preview btn-sm" id="previewBtn" onclick="runPreview()" disabled>
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M4.5 2.5l7 4.5-7 4.5V2.5z" fill="currentColor"/></svg>
+            Run
+          </button>
+        </div>
+        <div id="testResult"></div>
+        <div class="test-no-call" id="testNoCall">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="var(--gc-200)" stroke-width="1.5"/><path d="M10 16h12M16 10v12" stroke="var(--gc-300)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <p>Select a call and click Run to preview extraction against a real transcript.</p>
+        </div>
+      </div>
+
+      <div class="modal-right"></div>
+    </div>
+
+    <div class="sp-foot">
+      <button class="btn btn-ghost" onclick="closePanel()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProperty()">Save property</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="proto">Prototype · <strong>Analysis tab</strong></div>
+
+<script>
+/* ── State ── */
+let properties = [
+  {
+    id: 1,
+    name: 'call_outcome',
+    type: 'text',
+    instr: 'Assign call_outcome based strictly on the transcript AND the caller\'s intent, not keywords. Allowed values: "Interested" — The call was connected AND the client clearly expressed interest in renting a car and will send the application documents. "Not interested" — The call was connected AND the client explicitly said they are not interested.',
+    example: 'Interested',
+  },
+  {
+    id: 2,
+    name: 'summary',
+    type: 'text',
+    instr: 'A concise, factual summary of the call.',
+    example: 'Caller asked about pricing, was transferred to sales.',
+  },
+];
+let editingId = null;
+let panelOpen = false;
+
+const $ = id => document.getElementById(id);
+
+/* ── Tab switching ── */
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const idx = ['personality','knowledge','skills','analysis','scenarios'].indexOf(name);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  $('panel-' + name).classList.add('active');
+}
+
+/* ── Render properties ── */
+function typeLabel(t) {
+  return {text:'Text',number:'Number',boolean:'Boolean',date:'Date',enum:'Single choice'}[t]||t;
+}
+function renderProps() {
+  const rows = $('propRows');
+  $('propCount').textContent = properties.length + ' propert' + (properties.length === 1 ? 'y' : 'ies');
+  $('tab-analysis').querySelector('.tab-badge').textContent = properties.length;
+  if (!properties.length) {
+    rows.innerHTML = `<div class="prop-empty"><div class="pe-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div><p>No properties yet. Add one to start extracting data from your calls.</p></div>`;
+    return;
+  }
+  rows.innerHTML = properties.map(p => `
+    <div class="prop-row">
+      <div class="prop-dot"></div>
+      <div class="prop-body">
+        <div class="prop-name-row">
+          <span class="prop-name">${p.name}</span>
+          <span class="prop-type">${typeLabel(p.type)}</span>
+        </div>
+        <div class="prop-instr">${p.instr}</div>
+      </div>
+      <div class="prop-actions">
+        <button class="icon-btn" title="Edit" onclick="openPanel(${p.id})"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+        <button class="icon-btn danger" title="Delete" onclick="deleteProp(${p.id})"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 6v4M8.5 6v4M3 3.5l.7 8a1 1 0 001 .9h4.6a1 1 0 001-.9l.7-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Side panel ── */
+function openPanel(id) {
+  editingId = id;
+  $('spTitle').textContent = id ? 'Edit property' : 'Add property';
+  const p = id ? properties.find(x => x.id === id) : null;
+  $('fieldName').value = p ? p.name : '';
+  $('fieldType').value = p ? p.type : 'text';
+  $('fieldInstr').value = p ? p.instr : '';
+  $('testCallSelect').value = '';
+  $('testResult').innerHTML = '';
+  $('testNoCall').style.display = 'block';
+  $('previewBtn').disabled = true;
+  $('overlay').classList.add('open');
+  panelOpen = true;
+  setTimeout(() => $('fieldName').focus(), 60);
+}
+function closePanel() {
+  $('overlay').classList.remove('open');
+  panelOpen = false;
+}
+function onOverlayClick(e) {
+  if (e.target === $('overlay')) closePanel();
+}
+function saveProperty() {
+  const name = $('fieldName').value.trim();
+  if (!name) { $('fieldName').focus(); toast('Property name is required', false); return; }
+  const instr = $('fieldInstr').value.trim();
+  if (!instr) { $('fieldInstr').focus(); toast('Instructions are required', false); return; }
+  if (editingId) {
+    const p = properties.find(x => x.id === editingId);
+    p.name = name; p.type = $('fieldType').value; p.instr = instr;
+  } else {
+    properties.push({ id: Date.now(), name, type: $('fieldType').value, instr });
+  }
+  renderProps();
+  closePanel();
+  toast(editingId ? 'Property updated' : 'Property added');
+}
+function deleteProp(id) {
+  properties = properties.filter(p => p.id !== id);
+  renderProps();
+  toast('Property removed', false);
+}
+
+/* ── Test / preview ── */
+function onCallSelect() {
+  $('previewBtn').disabled = !$('testCallSelect').value;
+  $('testResult').innerHTML = '';
+  $('testNoCall').style.display = $('testCallSelect').value ? 'none' : 'block';
+}
+
+const MOCK_RESULTS = {
+  '1': { call_outcome: { value: 'Interested', conf: 94 }, summary: { value: 'Caller asked about EV rental options and monthly subscription plans. Showed strong interest — agreed to receive application documents via email.', conf: 98 } },
+  '2': { call_outcome: { value: 'Not interested', conf: 91 }, summary: { value: 'Caller requested a van for this weekend but inventory was unavailable. Caller declined waitlist offer and ended the call.', conf: 97 } },
+  '3': { call_outcome: { value: 'Interested', conf: 87 }, summary: { value: 'Short call. Caller asked for pricing details, was given a quote. Said they would call back after discussing with their partner.', conf: 95 } },
+  '4': { call_outcome: { value: 'Not interested', conf: 89 }, summary: { value: 'Caller was looking for long-term fleet rental. Company does not offer fleet services. Caller was informed and ended the call.', conf: 96 } },
+};
+
+function runPreview() {
+  const callId = $('testCallSelect').value;
+  if (!callId) return;
+  const fieldName = $('fieldName').value.trim() || 'call_outcome';
+  $('testNoCall').style.display = 'none';
+  $('testResult').innerHTML = `<div class="test-result"><div class="tr-loading"><div class="orb"></div>Running extraction on transcript…</div></div>`;
+  setTimeout(() => {
+    const data = MOCK_RESULTS[callId];
+    const key = data[fieldName] ? fieldName : 'call_outcome';
+    const res = data[key] || data['call_outcome'];
+    $('testResult').innerHTML = `
+      <div class="test-result">
+        <div class="tr-fields">
+          <div class="tr-field">
+            <div class="tr-field-head">
+              <span class="tr-field-name">${fieldName || key}</span>
+              <span class="tr-field-type">${typeLabel($('fieldType').value)}</span>
+            </div>
+            <div class="tr-field-val">${res.value}</div>
+            <div class="tr-confidence" style="padding:0 12px 10px">
+              <span style="font-size:11px;color:var(--gc-400)">Confidence</span>
+              <div class="bar"><div class="bar-fill" style="width:${res.conf}%"></div></div>
+              <span>${res.conf}%</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }, 1200);
+}
+
+/* ── Webhook toggle ── */
+function toggleWebhook() {
+  $('webhookToggle').classList.toggle('off');
+}
+
+/* ── Toggle sm ── */
+document.querySelectorAll('.toggle-sm').forEach(t => t.addEventListener('click', () => t.classList.toggle('off')));
+
+/* ── Toast ── */
+function toast(m, ok = true) {
+  const t = $('toast');
+  t.innerHTML = (ok ? '<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7.5l3.5 3.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '') + m;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ── Escape key ── */
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && panelOpen) closePanel(); });
+
+/* ── Init ── */
+renderProps();
+</script>
+</body>
+</html>
